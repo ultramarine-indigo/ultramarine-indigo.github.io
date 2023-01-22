@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>最大子串和 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="*1.1暴力枚举*\1.1.1基本思想*将问题的所有可能成为答案的解一一列举，然后根据问题所给出的条件判断此解是否合适，如果合适就保留，反之则舍弃。 *1.1.2解题思路*根据题意找到枚举变量； l 找到并尽量缩小范围（根据题意但无需太过精确，可以过大，条件在if中判断即可）； l 依据题意进行枚举遍历（尽量剪枝）。 *1.1.3算法设计*基于暴力枚举法的思想，为求数组的最大子串和，我们可以枚举出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最大子串和">
+<meta property="og:url" content="https://ultramarine-indigo.github.io/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="*1.1暴力枚举*\1.1.1基本思想*将问题的所有可能成为答案的解一一列举，然后根据问题所给出的条件判断此解是否合适，如果合适就保留，反之则舍弃。 *1.1.2解题思路*根据题意找到枚举变量； l 找到并尽量缩小范围（根据题意但无需太过精确，可以过大，条件在if中判断即可）； l 依据题意进行枚举遍历（尽量剪枝）。 *1.1.3算法设计*基于暴力枚举法的思想，为求数组的最大子串和，我们可以枚举出">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-22T03:22:24.000Z">
+<meta property="article:modified_time" content="2023-01-22T03:23:28.965Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ultramarine-indigo.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-最大子串和" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/" class="article-date">
+  <time class="dt-published" datetime="2023-01-22T03:22:24.000Z" itemprop="datePublished">2023-01-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      最大子串和
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h4 id="1-1暴力枚举"><a href="#1-1暴力枚举" class="headerlink" title="*1.1暴力枚举*"></a><em><strong>*1.1暴力枚举*</strong></em></h4><h5 id="1-1-1基本思想"><a href="#1-1-1基本思想" class="headerlink" title="\1.1.1基本思想*"></a><em><strong>\1.1.1基本思想*</strong></em></h5><p>将问题的所有可能成为答案的解一一列举，然后根据问题所给出的条件判断此解是否合适，如果合适就保留，反之则舍弃。</p>
+<h5 id="1-1-2解题思路"><a href="#1-1-2解题思路" class="headerlink" title="*1.1.2解题思路*"></a><em><strong>*1.1.2解题思路*</strong></em></h5><p>根据题意找到枚举变量；</p>
+<p>l 找到并尽量缩小范围（根据题意但无需太过精确，可以过大，条件在if中判断即可）；</p>
+<p>l 依据题意进行枚举遍历（尽量剪枝）。</p>
+<h5 id="1-1-3算法设计"><a href="#1-1-3算法设计" class="headerlink" title="*1.1.3算法设计*"></a><em><strong>*1.1.3算法设计*</strong></em></h5><p>基于暴力枚举法的思想，为求数组的最大子串和，我们可以枚举出该数组的每一个子串，然后求和，从而可以达到最大的子串和。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int max_subsequence_sum(int a[],int n)</span><br><span class="line">&#123;</span><br><span class="line">    int thissum,maxsum,i,j,k;</span><br><span class="line">    maxsum=0;</span><br><span class="line">    for(i=0;i&lt;n;i++) </span><br><span class="line">    &#123;</span><br><span class="line">        thissum=0;</span><br><span class="line">        for(j=i;j&lt;n;j++) </span><br><span class="line">        &#123;</span><br><span class="line">            thissum+=a[j];</span><br><span class="line">            if(thissum&gt;maxsum)</span><br><span class="line">            maxsum=thissum;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return maxsum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-分治法"><a href="#1-2-分治法" class="headerlink" title="*1.2 分治法*"></a><em><strong>*1.2 分治法*</strong></em></h4><h5 id="1-2-1基本思想"><a href="#1-2-1基本思想" class="headerlink" title="*1.2.1基本思想*"></a><em><strong>*1.2.1基本思想*</strong></em></h5><p>分治，就是分而治之，就是把一个问题分成两个或更多的相同或相似的子问题，再把子问题分成更小的子问题，直到最后子问题可以简单的直接求解，原问题的解即子问题解的合并，其中子问题的解是独立互不影响的。</p>
+<h5 id="1-2-2解题思路"><a href="#1-2-2解题思路" class="headerlink" title="*1.2.2解题思路*"></a><em><strong>*1.2.2解题思路*</strong></em></h5><p>分：递归的解决较小的问题（到终止层或者可以解决的时候停下）；</p>
+<p>治：递归求解，如果问题够小直接求解；</p>
+<p>合并：将小问题的解合并为更大问题的解，并自底向上逐步求出原问题的解。</p>
+<h5 id="1-2-3算法设计"><a href="#1-2-3算法设计" class="headerlink" title="*1.2.3算法设计*"></a><em><strong>*1.2.3算法设计*</strong></em></h5><p>在求解最大子串和的问题中，分就是利用二分法不断将原数组分为左右两个数组，直到分成的数组只有一个数的过程。此时该子串的最大子串和就是其本身。之后将所划分的子串逐级合并，并在此过程中递归求解，较大的数组的最大子串和就是所划分的前后两个数组各自的最大子串和与起始点在前一数组而终止点在后一数组的最大子串和三者中最大的一个。通过不断迭代最终得到原数组的最大子串和。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">int max_subsequence_sum(int a[],int left,int right)</span><br><span class="line">&#123;</span><br><span class="line">    //只含一个数时最大子串和即其自身</span><br><span class="line">    if(left==right)</span><br><span class="line">        return a[left];</span><br><span class="line">    int leftmax,rightmax;</span><br><span class="line">    int mid=(left+right)/2;</span><br><span class="line">    //递归求左子串的最大子串和</span><br><span class="line">    leftmax=max_subsequence_sum(a,left,mid);</span><br><span class="line">    //递归求右子串的最大子串和</span><br><span class="line">    rightmax=max_subsequence_sum(a,mid+1,right);</span><br><span class="line">    //计算左边的最大后缀</span><br><span class="line">    int mid_leftmax=INT_MIN;</span><br><span class="line">    int mid_leftsum=0;</span><br><span class="line">    for (int i=mid;i&gt;=left;i--)</span><br><span class="line">    &#123;</span><br><span class="line">        mid_leftsum+=a[i];</span><br><span class="line">        if(mid_leftmax&lt;mid_leftsum)</span><br><span class="line">            mid_leftmax=mid_leftsum;</span><br><span class="line">    &#125;</span><br><span class="line">    //计算右边的最大前缀</span><br><span class="line">    int mid_rightmax=INT_MIN;</span><br><span class="line">    int mid_rightsum=0;</span><br><span class="line">    for(int i=mid+1;i&lt;=right;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        mid_rightsum+=a[i];</span><br><span class="line">        if(mid_rightsum&gt;mid_rightmax)</span><br><span class="line">            mid_rightmax=mid_rightsum;</span><br><span class="line">    &#125;</span><br><span class="line">    //左右相加得到中间的最大子串和</span><br><span class="line">    int midmax=mid_leftmax+mid_rightmax;</span><br><span class="line"></span><br><span class="line">    return max(max(leftmax,rightmax),midmax);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-动态规划"><a href="#1-3-动态规划" class="headerlink" title="*1.3 动态规划*"></a><em><strong>*1.3 动态规划*</strong></em></h4><h5 id="1-3-1基本思想"><a href="#1-3-1基本思想" class="headerlink" title="*1.3.1基本思想*"></a><em><strong>*1.3.1基本思想*</strong></em></h5><p>动态规划是通过将一个问题拆分为多个子问题，根据不同子问题间的状态关系来确定一个状态转移方程，使得该问题得到分治解决。在按顺序求解子问题时，可以得到多个局部解，要通过决策来确定这些解中的最优解，最终通过一步一步的递推求得最终问题关系。</p>
+<h5 id="1-3-2解题思路"><a href="#1-3-2解题思路" class="headerlink" title="*1.3.2解题思路*"></a><em><strong>*1.3.2解题思路*</strong></em></h5><p>l 划分阶段，根据问题的特征，将问题分为若干个存在一定关系的子阶段；</p>
+<p>l 确定状态和状态变量，表示出各个阶段的问题状态；</p>
+<p>l 确定决策变量和状态转移方程，根据各状态之间的关系写出状态转移方程，并以此来确定该阶段的最优解；</p>
+<p>l 给出初始条件和边界情况，如迭代次数等；</p>
+<p>l 根据某一计算顺序计算。</p>
+<h5 id="1-3-3算法设计"><a href="#1-3-3算法设计" class="headerlink" title="*1.3.3算法设计*"></a><em><strong>*1.3.3算法设计*</strong></em></h5><p>在该问题中，由于要求最大子串和，所以肯定需要遍历数组，所以我们可以将遍历的每一步看做一个状态，状态变量就是当前已遍历的子串和。如果当前遍历的子串和大于我们定义的最大子串和就对其进行更新，如果当前遍历的子串和小于0，说明使之后的子串求变小，所以将当前子串和赋值为0，然后继续遍历求和。直至到达边界条件即数组全部遍历。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int max_subsequence_sum(int a[],int n)</span><br><span class="line">&#123;</span><br><span class="line">    int thissum,maxsum,i;</span><br><span class="line">    maxsum=0;</span><br><span class="line">    for(i=0;i&lt;n;i++) </span><br><span class="line">    &#123;</span><br><span class="line">        thissum+=a[i];</span><br><span class="line">        if(thissum&gt;maxsum) </span><br><span class="line">            maxsum=thissum;</span><br><span class="line">        else if(thissum&lt;0) </span><br><span class="line">        &#123;</span><br><span class="line">            thissum=0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return maxsum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-5实验结果"><a href="#1-5实验结果" class="headerlink" title="*1.5实验结果*"></a><em><strong>*1.5实验结果*</strong></em></h4><h3 id="2-c-用法积累"><a href="#2-c-用法积累" class="headerlink" title="2.c++用法积累"></a><em><strong>2.c++用法积累</strong></em></h3><h4 id="2-1c-中随机数的生成"><a href="#2-1c-中随机数的生成" class="headerlink" title="2.1c++中随机数的生成"></a><em><strong>2.1c++中随机数的生成</strong></em></h4><h5 id="2-1-1使用cstdlib库"><a href="#2-1-1使用cstdlib库" class="headerlink" title="2.1.1使用cstdlib库"></a><em><strong>2.1.1使用cstdlib库</strong></em></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;//产生 [0,b) 范围内到随机数  </span><br><span class="line">  int randoxNumber = rand() % b ;</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [a,b) 范围内到随机数 </span><br><span class="line">    int randoxNumber = a + rand() % ( b -a ) ;</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [a,b] 范围内到随机数 </span><br><span class="line">    int randoxNumber = a + rand() % ( b -a +1 ) ;</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [0,1] 范围内到随机小数 </span><br><span class="line">    double randoxNumber =rand() / RAND_MAX</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [0,1) 范围内到随机小数 </span><br><span class="line">    double randoxNumber =rand() / ( RAND_MAX +1 )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ultramarine-indigo.github.io/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/" data-id="cld6vbwvg0001s8xf1azw79zf" data-title="最大子串和" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/30/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/">最大子串和</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/30/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
