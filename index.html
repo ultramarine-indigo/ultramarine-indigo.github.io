@@ -101,7 +101,8 @@
 <li>一个cut（割）就是图中边集合E的一个子集C，那这个割的cost（表示为|C|）就是边子集C的所有边的权值的总和。Graph Cuts中的Cuts是指这样一个边的集合，很显然这些边集合包括了上面2种边，该集合中所有边的断开会导致残留”S”和”T”图的分开，所以就称为“割”。max-flow&#x2F;min-cut算法就可以用来获得s-t图的最小割，即其边的所有权值之和最小。这个最小割把图的顶点划分为两个不相交的子集S和T，其中s ∈S，t∈ T和S∪T&#x3D;V 。这两个子集就对应于图像的前景像素集和背景像素集，那就相当于完成了图像分割。</li>
 </ol>
 <h4 id="1-2-模型设计"><a href="#1-2-模型设计" class="headerlink" title="1.2 模型设计"></a>1.2 模型设计</h4><p>假设整幅图像可以表示为一系列灰度值（每个像素的灰度值）<strong>I</strong>&#x3D;{I1,I2,….Ip}，而整个图像的标签label（每个像素的label）为<strong>A</strong>&#x3D; {A1,A2,…,Ap }，其中Ai为0（背景）或者1（目标）。那假设图像的分割为A时，图像的能量可以表示为：</p>
-<p><img src="/.io//Graphcut1.png" alt="Graphcut1"></p>
+<img src="/.io//Graphcut1.png" alt="Graphcut1" style="zoom:50%;">
+
 <p>其中，R(A)为区域项（regional term），B(A)为边界项（boundary term），而a就是区域项和边界项之间的重要因子，决定它们对能量的影响大小。如果a为0，那么就只考虑边界因素，不考虑区域因素。E(A)表示的是权值，即损失函数，也叫能量函数，图割的目标就是优化能量函数使其值达到最小。</p>
 <p><strong>区域项：</strong></p>
 <p>其中表示为像素Ip分配标签Ap的惩罚，Rp(Ap)能量项的权值可以通过比较像素Ip的灰度和给定的目标和前景的灰度直方图来获得，换句话说就是像素Ip属于标签Ap的概率，我们希望像素Ip分配为其概率最大的标签Ap，这时候我们希望能量最小，所以一般取概率的负对数值，故t-link的权值如下：</p>
@@ -178,7 +179,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ultramarine-indigo.github.io/2023/07/10/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%EF%BC%9AGraphCut-GrabCut-Deep-GrabCut%E8%AF%A6%E8%A7%A3/" data-id="cljwnyrcj0001yoxf3zed9upu" data-title="图像分割：GraphCut-GrabCut-Deep GrabCut详解" class="article-share-link">Share</a>
+      <a data-url="http://ultramarine-indigo.github.io/2023/07/10/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%EF%BC%9AGraphCut-GrabCut-Deep-GrabCut%E8%AF%A6%E8%A7%A3/" data-id="cljwo3xz70001c8xffij9dugn" data-title="图像分割：GraphCut-GrabCut-Deep GrabCut详解" class="article-share-link">Share</a>
       
       
       
@@ -243,7 +244,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ultramarine-indigo.github.io/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/" data-id="cljwnyrcl0002yoxfd15kduz2" data-title="最大子串和" class="article-share-link">Share</a>
+      <a data-url="http://ultramarine-indigo.github.io/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/" data-id="cljwo3xz80002c8xfhi2zhhzw" data-title="最大子串和" class="article-share-link">Share</a>
       
       
       
@@ -296,7 +297,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ultramarine-indigo.github.io/2022/08/30/hello-world/" data-id="cljwnyrce0000yoxfbbfsemuq" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="http://ultramarine-indigo.github.io/2022/08/30/hello-world/" data-id="cljwo3xz20000c8xfgo603ox7" data-title="Hello World" class="article-share-link">Share</a>
       
       
       
