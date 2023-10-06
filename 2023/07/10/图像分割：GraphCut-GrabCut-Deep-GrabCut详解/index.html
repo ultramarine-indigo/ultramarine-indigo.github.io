@@ -19,41 +19,41 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"ultramarine-indigo.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.18.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="GraphCut-GrabCut-Deep GrabCut1.GraphCut提出论文：《Interactive graph cuts for optimal boundary and region segmentation of objects in N-D images》 (Boykov，iccv01) 1.1 主要思想 首先，用户明确指出少量背景像素B和前景目标像素O。然后将图像建立为图（G">
+    <meta name="description" content="在计算机视觉领域，图像分割是一项关键任务，用于将图像中的目标对象从背景中准确提取出来。为了实现这一目标，研究人员开发了多种不同的图像分割方法。本文将介绍三种常见的图像分割方法：GraphCut、GrabCut和Deep GrabCut。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="图像分割：GraphCut-GrabCut-Deep GrabCut详解">
+<meta property="og:title" content="图像分割：GraphCut-GrabCut-DeepGrabCut详解">
 <meta property="og:url" content="http://ultramarine-indigo.github.io/2023/07/10/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%EF%BC%9AGraphCut-GrabCut-Deep-GrabCut%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="ultramarine&#39;s Blog">
-<meta property="og:description" content="GraphCut-GrabCut-Deep GrabCut1.GraphCut提出论文：《Interactive graph cuts for optimal boundary and region segmentation of objects in N-D images》 (Boykov，iccv01) 1.1 主要思想 首先，用户明确指出少量背景像素B和前景目标像素O。然后将图像建立为图（G">
+<meta property="og:description" content="在计算机视觉领域，图像分割是一项关键任务，用于将图像中的目标对象从背景中准确提取出来。为了实现这一目标，研究人员开发了多种不同的图像分割方法。本文将介绍三种常见的图像分割方法：GraphCut、GrabCut和Deep GrabCut。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://ultramarine-indigo.github.io/.io//Graphcut1.png">
-<meta property="og:image" content="http://ultramarine-indigo.github.io/.io//Graphcut2.png">
-<meta property="og:image" content="http://ultramarine-indigo.github.io/.io//Graphcut3.png">
-<meta property="og:image" content="http://ultramarine-indigo.github.io/.io//Grabcut1.png">
-<meta property="og:image" content="http://ultramarine-indigo.github.io/.io//Grabcut2.png">
-<meta property="og:image" content="http://ultramarine-indigo.github.io/.io//Grabcut3.png">
-<meta property="og:image" content="http://ultramarine-indigo.github.io/.io//Grabcut%20algorithm-flow.png">
-<meta property="og:image" content="http://ultramarine-indigo.github.io/.io//DeepGrabCut%20framework.png">
-<meta property="og:image" content="http://ultramarine-indigo.github.io/.io//DeepGrabCut1.png">
-<meta property="og:image" content="http://ultramarine-indigo.github.io/.io//DeepGrabCut2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Graphcut1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Graphcut2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Graphcut3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Grabcut1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Grabcut2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Grabcut3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Grabcut algorithm-flow.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/DeepGrabCut-framework.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/DeepGrabCut1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/DeepGrabCut2.png">
 <meta property="article:published_time" content="2023-07-10T09:11:59.000Z">
-<meta property="article:modified_time" content="2023-10-06T09:15:07.994Z">
+<meta property="article:modified_time" content="2023-10-06T13:23:40.135Z">
 <meta property="article:author" content="Ultramarine">
 <meta property="article:tag" content="CV">
 <meta property="article:tag" content="图像分割">
 <meta property="article:tag" content="算法模型">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ultramarine-indigo.github.io/.io//Graphcut1.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Graphcut1.png">
 
 
 <link rel="canonical" href="http://ultramarine-indigo.github.io/2023/07/10/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%EF%BC%9AGraphCut-GrabCut-Deep-GrabCut%E8%AF%A6%E8%A7%A3/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2023/07/10/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%EF%BC%9AGraphCut-GrabCut-Deep-GrabCut%E8%AF%A6%E8%A7%A3/","path":"2023/07/10/图像分割：GraphCut-GrabCut-Deep-GrabCut详解/","title":"图像分割：GraphCut-GrabCut-Deep GrabCut详解"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2023/07/10/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%EF%BC%9AGraphCut-GrabCut-Deep-GrabCut%E8%AF%A6%E8%A7%A3/","path":"2023/07/10/图像分割：GraphCut-GrabCut-Deep-GrabCut详解/","title":"图像分割：GraphCut-GrabCut-DeepGrabCut详解"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>图像分割：GraphCut-GrabCut-Deep GrabCut详解 | ultramarine's Blog</title>
+<title>图像分割：GraphCut-GrabCut-DeepGrabCut详解 | ultramarine's Blog</title>
   
 
 
@@ -125,7 +125,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphCut-GrabCut-Deep-GrabCut"><span class="nav-number">1.</span> <span class="nav-text">GraphCut-GrabCut-Deep GrabCut</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-GraphCut"><span class="nav-number">1.1.</span> <span class="nav-text">1.GraphCut</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 主要思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 模型设计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-GrabCut"><span class="nav-number">2.</span> <span class="nav-text">2.GrabCut</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 主要思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 模型设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 算法流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Deep-GrabCut"><span class="nav-number">3.</span> <span class="nav-text">3.Deep GrabCut</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 主要思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 模型设计</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E7%9F%A9%E5%BD%A2%E9%87%87%E6%A0%B7"><span class="nav-number">3.0.2.1.</span> <span class="nav-text">1. 矩形采样</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E7%9F%A9%E5%BD%A2%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.0.2.2.</span> <span class="nav-text">2. 矩形转换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-CEDN-model-training"><span class="nav-number">3.0.2.3.</span> <span class="nav-text">3. CEDN model training</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-GraphCut"><span class="nav-number">1.</span> <span class="nav-text">1.GraphCut</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 主要思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 模型设计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-GrabCut"><span class="nav-number"></span> <span class="nav-text">2.GrabCut</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3"><span class="nav-number">0.1.</span> <span class="nav-text">2.1 主要思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1"><span class="nav-number">0.2.</span> <span class="nav-text">2.2 模型设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="nav-number">0.3.</span> <span class="nav-text">2.3 算法流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Deep-GrabCut"><span class="nav-number"></span> <span class="nav-text">3.Deep GrabCut</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3"><span class="nav-number">0.1.</span> <span class="nav-text">3.1 主要思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1"><span class="nav-number">0.2.</span> <span class="nav-text">3.2 模型设计</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E7%9F%A9%E5%BD%A2%E9%87%87%E6%A0%B7"><span class="nav-number">0.2.1.</span> <span class="nav-text">1. 矩形采样</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E7%9F%A9%E5%BD%A2%E8%BD%AC%E6%8D%A2"><span class="nav-number">0.2.2.</span> <span class="nav-text">2. 矩形转换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-CEDN-model-training"><span class="nav-number">0.2.3.</span> <span class="nav-text">3. CEDN model training</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -144,12 +144,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -189,12 +189,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="图像分割：GraphCut-GrabCut-Deep GrabCut详解 | ultramarine's Blog">
+      <meta itemprop="name" content="图像分割：GraphCut-GrabCut-DeepGrabCut详解 | ultramarine's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          图像分割：GraphCut-GrabCut-Deep GrabCut详解
+          图像分割：GraphCut-GrabCut-DeepGrabCut详解
         </h1>
 
         <div class="post-meta-container">
@@ -206,13 +206,6 @@
       <span class="post-meta-item-text">发表于</span>
 
       <time title="创建时间：2023-07-10 17:11:59" itemprop="dateCreated datePublished" datetime="2023-07-10T17:11:59+08:00">2023-07-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-06 17:15:07" itemprop="dateModified" datetime="2023-10-06T17:15:07+08:00">2023-10-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -233,7 +226,13 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="GraphCut-GrabCut-Deep-GrabCut"><a href="#GraphCut-GrabCut-Deep-GrabCut" class="headerlink" title="GraphCut-GrabCut-Deep GrabCut"></a>GraphCut-GrabCut-Deep GrabCut</h2><h3 id="1-GraphCut"><a href="#1-GraphCut" class="headerlink" title="1.GraphCut"></a>1.GraphCut</h3><p>提出论文：《Interactive graph cuts for optimal boundary and region segmentation of objects in N-D images》 (Boykov，iccv01)</p>
+    <div class="post-body" itemprop="articleBody"><p>在计算机视觉领域，图像分割是一项关键任务，用于将图像中的目标对象从背景中准确提取出来。为了实现这一目标，研究人员开发了多种不同的图像分割方法。本文将介绍三种常见的图像分割方法：GraphCut、GrabCut和Deep GrabCut。</p>
+<span id="more"></span>
+
+<p><strong>GraphCut</strong> 是一种经典的图像分割方法，它使用图割算法，基于用户提供的前景和背景标记，将图像分割成两个区域。GraphCut的核心思想是通过最小割最大流算法找到能量最小的切割，将图像分成目标和背景部分。</p>
+<p><strong>GrabCut</strong> 是GraphCut的改进版本，引入了RGB三通道的混合高斯模型来更好地建模目标和背景。</p>
+<p><strong>Deep GrabCut</strong> 是基于深度学习的图像分割方法。它利用卷积编码器-解码器网络进行训练，同时使用距离图作为输入，以捕捉上下文信息。这种方法通过深度学习技术提高了分割性能。</p>
+<h3 id="1-GraphCut"><a href="#1-GraphCut" class="headerlink" title="1.GraphCut"></a>1.GraphCut</h3><p>提出论文：《Interactive graph cuts for optimal boundary and region segmentation of objects in N-D images》 (Boykov，iccv01)</p>
 <h4 id="1-1-主要思想"><a href="#1-1-主要思想" class="headerlink" title="1.1 主要思想"></a>1.1 主要思想</h4><ol>
 <li>首先，用户明确指出少量背景像素B和前景目标像素O。然后将图像建立为图（Graph），像素就是图上的节点(Node)。</li>
 <li>定义两个特殊的节点是T节点（background terminal, 表示背景）以及S节点(Object Terminal, 表示前景）。在所有节点之间建立连接。图像像素之间的连接称作n-links，像素到特殊节点之间的连接称作t-links</li>
@@ -241,16 +240,16 @@
 <li>一个cut（割）就是图中边集合E的一个子集C，那这个割的cost（表示为|C|）就是边子集C的所有边的权值的总和。Graph Cuts中的Cuts是指这样一个边的集合，很显然这些边集合包括了上面2种边，该集合中所有边的断开会导致残留”S”和”T”图的分开，所以就称为“割”。max-flow&#x2F;min-cut算法就可以用来获得s-t图的最小割，即其边的所有权值之和最小。这个最小割把图的顶点划分为两个不相交的子集S和T，其中s ∈S，t∈ T和S∪T&#x3D;V 。这两个子集就对应于图像的前景像素集和背景像素集，那就相当于完成了图像分割。</li>
 </ol>
 <h4 id="1-2-模型设计"><a href="#1-2-模型设计" class="headerlink" title="1.2 模型设计"></a>1.2 模型设计</h4><p>假设整幅图像可以表示为一系列灰度值（每个像素的灰度值）<strong>I</strong>&#x3D;{I1,I2,….Ip}，而整个图像的标签label（每个像素的label）为<strong>A</strong>&#x3D; {A1,A2,…,Ap }，其中Ai为0（背景）或者1（目标）。那假设图像的分割为A时，图像的能量可以表示为：</p>
-<img src="/.io//Graphcut1.png" alt="Graphcut1" style="zoom:50%;">
+<img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Graphcut1.png" alt="Graphcut1" style="zoom:67%;">
 
 <p>其中，R(A)为区域项（regional term），B(A)为边界项（boundary term），而a就是区域项和边界项之间的重要因子，决定它们对能量的影响大小。如果a为0，那么就只考虑边界因素，不考虑区域因素。E(A)表示的是权值，即损失函数，也叫能量函数，图割的目标就是优化能量函数使其值达到最小。</p>
 <p><strong>区域项：</strong></p>
 <p>其中表示为像素Ip分配标签Ap的惩罚，Rp(Ap)能量项的权值可以通过比较像素Ip的灰度和给定的目标和前景的灰度直方图来获得，换句话说就是像素Ip属于标签Ap的概率，我们希望像素Ip分配为其概率最大的标签Ap，这时候我们希望能量最小，所以一般取概率的负对数值，故t-link的权值如下：</p>
-<img src="/.io//Graphcut2.png" alt="Graphcut2" style="zoom:50%;">
+<img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Graphcut2.png" alt="Graphcut2" style="zoom:67%;">
 
 <p>​    由上面两个公式可以看到，当像素Ip的灰度值属于目标的概率Pr(Ip|’obj’)大于背景Pr(Ip|’bkg’)，那么Rp(1)就小于Rp(0)，也就是说当像素Ip更有可能属于目标时，将Ip归类为目标就会使能量R(A)小。那么，如果全部的像素都被正确划分为目标或者背景，那么这时候能量就是最小的</p>
 <p><strong>边界项：</strong></p>
-<img src="/.io//Graphcut3.png" alt="Graphcut3" style="zoom:50%;">
+<img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Graphcut3.png" alt="Graphcut3" style="zoom:67%;">
 
 <p>其中，p和q为邻域像素，边界平滑项主要体现分割L的边界属性，B可以解析为像素p和q之间不连续的惩罚，一般来说如果p和q越相似（例如它们的灰度），那么B越大，如果他们非常不同，那么B就接近于0。换句话说，如果两邻域像素差别很小，那么它属于同一个目标或者同一背景的可能性就很大，如果他们的差别很大，那说明这两个像素很有可能处于目标和背景的边缘部分，则被分割开的可能性比较大，所以当两邻域像素差别越大，B越小，即能量越小。</p>
 <h2 id="2-GrabCut"><a href="#2-GrabCut" class="headerlink" title="2.GrabCut"></a>2.GrabCut</h2><p>提出论文：《“GrabCut” — Interactive Foreground Extraction using Iterated Graph Cuts》</p>
@@ -261,18 +260,18 @@
 </ol>
 <h4 id="2-2-模型设计"><a href="#2-2-模型设计" class="headerlink" title="2.2 模型设计"></a>2.2 模型设计</h4><p>我们采用RGB颜色空间，分别用一个K个高斯分量（一取般K&#x3D;5）的全协方差GMM（混合高斯模型）来对目标和背景进行建模。于是就存在一个额外的向量<strong>k</strong> &#x3D; {k1, . . ., kn, . . ., kN}，其中kn就是第n个像素对应于哪个高斯分量，kn∈ {1, . . . K}。对于每个像素，其来自于目标GMM的某个高斯分量，或者背景GMM的某个高斯分量。</p>
 <p>所以用于整个图像的Gibbs能量为</p>
-<img src="/.io//Grabcut1.png" alt="Grabcut1" style="zoom:50%;">
+<img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Grabcut1.png" alt="Grabcut1" style="zoom: 50%;">
 
 <p><strong>区域项</strong></p>
 <p>表示一个像素被归类为目标或者背景的惩罚，也就是某个像素属于目标或者背景的概率的负对数。我们知道混合高斯密度模型是如下形式</p>
-<img src="/.io//Grabcut2.png" alt="Grabcut2" style="zoom:50%;">
+<img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Grabcut2.png" alt="Grabcut2" style="zoom:50%;">
 
 <p>取负对数之后就变成式（9）那样的形式了，其中GMM的参数<strong>θ</strong>就有三个：每一个高斯分量的权重π、每个高斯分量的均值向量<strong>u</strong>（因为有RGB三个通道，故为三个元素向量）和协方差矩阵<strong>∑</strong>（因为有RGB三个通道，故为3x3矩阵）。如式（10）。也就是说描述目标的GMM和描述背景的GMM的这三个参数都需要学习确定。一旦确定了这三个参数，那么我们知道一个像素的RGB颜色值之后，就可以代入目标的GMM和背景的GMM，就可以得到该像素分别属于目标和背景的概率了，也就是Gibbs能量的区域能量项。</p>
 <p><strong>区域项：</strong></p>
-<img src="/.io//Grabcut3.png" alt="Grabcut3" style="zoom: 25%;">
+<img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Grabcut3.png" alt="Grabcut3" style="zoom: 33%;">
 
 <p>体现邻域像素m和n之间不连续的惩罚，如果两邻域像素差别很小，那么它属于同一个目标或者同一背景的可能性就很大，如果他们的差别很大，那说明这两个像素很有可能处于目标和背景的边缘部分，则被分割开的可能性比较大，所以当两邻域像素差别越大，能量越小。而在RGB空间中，衡量两像素的相似性，我们采用欧式距离（二范数）。这里面的参数β由图像的对比度决定，可以想象，如果图像的对比度较低，也就是说本身有差别的像素m和n，它们的差||zm-zn||还是比较低，那么我们需要乘以一个比较大的β来放大这种差别，而对于对比度高的图像，那么也许本身属于同一目标的像素m和n的差||zm-zn||还是比较高，那么我们就需要乘以一个比较小的β来缩小这种差别，使得V项能在对比度高或者低的情况下都可以正常工作。常数γ一般可设为50（经过作者用15张图像训练得到的比较好的值）。</p>
-<h4 id="2-3-算法流程"><a href="#2-3-算法流程" class="headerlink" title="2.3 算法流程"></a>2.3 算法流程</h4><img src="/.io//Grabcut algorithm-flow.png" alt="Grabcut algorithm-flow" style="zoom:50%;">
+<h4 id="2-3-算法流程"><a href="#2-3-算法流程" class="headerlink" title="2.3 算法流程"></a>2.3 算法流程</h4><img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Grabcut algorithm-flow.png" alt="Grabcut algorithm-flow" style="zoom: 50%;">
 
 <p><strong>1.初始化</strong></p>
 <ul>
@@ -297,19 +296,17 @@
 <li>将 bbox 转换为欧式距离图（大小与输入的图像大小一致），将其作为一种软约束，在输入训练网络时，只需要将该欧式距离图和原 RGB 图像连接起来（即在通道数上进行扩展）</li>
 <li>构建卷积编码器-解码器的网络(convolutional encoder-decoder network) 作为模型框架，通过将含有距离图的图像作为输入，进行模型的训练。</li>
 </ol>
-<img src="/.io//DeepGrabCut framework.png" alt="DeepGrabCut framework" style="zoom:50%;">
-
+<p><img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/DeepGrabCut-framework.png" alt="DeepGrabCut-framework"></p>
 <h4 id="3-2-模型设计"><a href="#3-2-模型设计" class="headerlink" title="3.2 模型设计"></a>3.2 模型设计</h4><h5 id="1-矩形采样"><a href="#1-矩形采样" class="headerlink" title="1. 矩形采样"></a>1. 矩形采样</h5><p>通过采样各个分割目标的矩形框，扩充出一个训练集，同时还能保证不会过拟合。</p>
-<img src="/.io//DeepGrabCut1.png" alt="DeepGrabCut1" style="zoom:50%;">
-
+<p><img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/DeepGrabCut1.png" alt="DeepGrabCut1"></p>
 <h5 id="2-矩形转换"><a href="#2-矩形转换" class="headerlink" title="2. 矩形转换"></a>2. 矩形转换</h5><p>给定图像 L 中的一个目标物体矩形框 B，定义矩形框 B 上的 pixel 为一个像素集合：Se &#x3D; { pi∣pi is on the  edge of B } ，其中 pi 表示了像素 i 的位置。</p>
 <p>同样地，<br>定义矩形框 B 内(inside)的 pixel 为一个像素集合：Si</p>
 <p>定义矩形框 B 外(outside)的 pixel 为一个像素集合：So</p>
 <p>创建 2D 图像的 distance map D，该 distance map 与原图像有着相同的宽度和高度</p>
 <p>distance map D中，位置 pi 的像素距离计算：</p>
-<img src="/.io//DeepGrabCut2.png" alt="DeepGrabCut2" style="zoom:50%;">
+<img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/DeepGrabCut2.png" alt="DeepGrabCut2" style="zoom:67%;">
 
-<p>其中，∣ ⋅ ∣为欧几里得距离，本文使用有符号的距离变换来捕获输入矩形框的上下文信息。考虑到存储效率，将距离 D DD 截取到 0 ~ 255，最后将 distance map D 和 RGB 图像进行连接，送入训练网络进行训练。</p>
+<p>其中，∣ ⋅ ∣为欧几里得距离，本文使用有符号的距离变换来捕获输入矩形框的上下文信息。考虑到存储效率，将距离 D 截取到 0 ~ 255，最后将 distance map D 和 RGB 图像进行连接，送入训练网络进行训练。</p>
 <h5 id="3-CEDN-model-training"><a href="#3-CEDN-model-training" class="headerlink" title="3. CEDN model training"></a>3. CEDN model training</h5><p>输入： RGB 与 distance map D 的 4 通道连接图<br>输出： 二值分割结果</p>
 <p>CEDN model（Convolutional Encoder-Decoder Network）包含两个部分：encoder &amp; decoder</p>
 <p>Encoder： 由 convolutional layer 和 max-pooling layer 组成，作用是提取深层信息，将输入图片逐渐抽象成更小的 feature map。</p>
@@ -333,8 +330,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/" rel="prev" title="最大子串和">
-                  <i class="fa fa-angle-left"></i> 最大子串和
+                <a href="/2022/12/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev" title="数据库学习笔记">
+                  <i class="fa fa-angle-left"></i> 数据库学习笔记
                 </a>
             </div>
             <div class="post-nav-item">

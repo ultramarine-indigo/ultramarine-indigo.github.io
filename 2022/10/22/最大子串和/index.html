@@ -19,29 +19,29 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"ultramarine-indigo.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.18.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="*1.1暴力枚举*\1.1.1基本思想*将问题的所有可能成为答案的解一一列举，然后根据问题所给出的条件判断此解是否合适，如果合适就保留，反之则舍弃。 *1.1.2解题思路*根据题意找到枚举变量； l 找到并尽量缩小范围（根据题意但无需太过精确，可以过大，条件在if中判断即可）； l 依据题意进行枚举遍历（尽量剪枝）。 *1.1.3算法设计*基于暴力枚举法的思想，为求数组的最大子串和，我们可以枚举出">
+    <meta name="description" content="本文利用求解最小子串和这一问题，来介绍三种常见的算法：暴力枚举、分治法和动态规划。在具体题目中体会这三种经典算法的基本思想、解题思路和算法设计。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最大子串和">
-<meta property="og:url" content="http://ultramarine-indigo.github.io/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/index.html">
+<meta property="og:title" content="求解最大子串和问题">
+<meta property="og:url" content="http://ultramarine-indigo.github.io/2022/10/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/index.html">
 <meta property="og:site_name" content="ultramarine&#39;s Blog">
-<meta property="og:description" content="*1.1暴力枚举*\1.1.1基本思想*将问题的所有可能成为答案的解一一列举，然后根据问题所给出的条件判断此解是否合适，如果合适就保留，反之则舍弃。 *1.1.2解题思路*根据题意找到枚举变量； l 找到并尽量缩小范围（根据题意但无需太过精确，可以过大，条件在if中判断即可）； l 依据题意进行枚举遍历（尽量剪枝）。 *1.1.3算法设计*基于暴力枚举法的思想，为求数组的最大子串和，我们可以枚举出">
+<meta property="og:description" content="本文利用求解最小子串和这一问题，来介绍三种常见的算法：暴力枚举、分治法和动态规划。在具体题目中体会这三种经典算法的基本思想、解题思路和算法设计。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-01-22T03:22:24.000Z">
-<meta property="article:modified_time" content="2023-10-06T09:13:56.796Z">
+<meta property="article:published_time" content="2022-10-22T03:22:24.000Z">
+<meta property="article:modified_time" content="2023-10-06T13:21:25.966Z">
 <meta property="article:author" content="Ultramarine">
-<meta property="article:tag" content="算法">
 <meta property="article:tag" content="刷题总结">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://ultramarine-indigo.github.io/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/">
+<link rel="canonical" href="http://ultramarine-indigo.github.io/2022/10/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/","path":"2023/01/22/最大子串和/","title":"最大子串和"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2022/10/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/","path":"2022/10/22/最大子串和/","title":"求解最大子串和问题"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>最大子串和 | ultramarine's Blog</title>
+<title>求解最大子串和问题 | ultramarine's Blog</title>
   
 
 
@@ -113,7 +113,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1%E6%9A%B4%E5%8A%9B%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.</span> <span class="nav-text">*1.1暴力枚举*</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-1%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-number">1.1.</span> <span class="nav-text">\1.1.1基本思想*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-2%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">1.2.</span> <span class="nav-text">*1.1.2解题思路*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-3%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.3.</span> <span class="nav-text">*1.1.3算法设计*</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E5%88%86%E6%B2%BB%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">*1.2 分治法*</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-1%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-number">2.1.</span> <span class="nav-text">*1.2.1基本思想*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-2%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">2.2.</span> <span class="nav-text">*1.2.2解题思路*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-3%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.3.</span> <span class="nav-text">*1.2.3算法设计*</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">3.</span> <span class="nav-text">*1.3 动态规划*</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-1%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-number">3.1.</span> <span class="nav-text">*1.3.1基本思想*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-2%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">3.2.</span> <span class="nav-text">*1.3.2解题思路*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-3%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.3.</span> <span class="nav-text">*1.3.3算法设计*</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">4.</span> <span class="nav-text">*1.5实验结果*</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-c-%E7%94%A8%E6%B3%95%E7%A7%AF%E7%B4%AF"><span class="nav-number"></span> <span class="nav-text">2.c++用法积累</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1c-%E4%B8%AD%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%9A%84%E7%94%9F%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">2.1c++中随机数的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-1%E4%BD%BF%E7%94%A8cstdlib%E5%BA%93"><span class="nav-number">1.1.</span> <span class="nav-text">2.1.1使用cstdlib库</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%AD%90%E4%B8%B2%E5%92%8C%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">最小子串和问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E6%9A%B4%E5%8A%9B%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 暴力枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-1%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1基本思想*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-2%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">1.1.2.</span> <span class="nav-text">*1.1.2解题思路*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-3%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.1.3.</span> <span class="nav-text">*1.1.3算法设计*</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E5%88%86%E6%B2%BB%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">*1.2 分治法*</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-1%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-number">1.2.1.</span> <span class="nav-text">*1.2.1基本思想*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-2%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">1.2.2.</span> <span class="nav-text">*1.2.2解题思路*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-3%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.2.3.</span> <span class="nav-text">*1.2.3算法设计*</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">1.3.</span> <span class="nav-text">*1.3 动态规划*</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-1%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-number">1.3.1.</span> <span class="nav-text">*1.3.1基本思想*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-2%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">1.3.2.</span> <span class="nav-text">*1.3.2解题思路*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-3%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.3.3.</span> <span class="nav-text">*1.3.3算法设计*</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">1.4.</span> <span class="nav-text">*1.5实验结果*</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-c-%E7%94%A8%E6%B3%95%E7%A7%AF%E7%B4%AF"><span class="nav-number">2.</span> <span class="nav-text">2.c++用法积累</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1c-%E4%B8%AD%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%9A%84%E7%94%9F%E6%88%90"><span class="nav-number">2.1.</span> <span class="nav-text">2.1c++中随机数的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-1%E4%BD%BF%E7%94%A8cstdlib%E5%BA%93"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1使用cstdlib库</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -132,12 +132,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -164,7 +164,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/">
+    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2022/10/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -177,12 +177,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="最大子串和 | ultramarine's Blog">
+      <meta itemprop="name" content="求解最大子串和问题 | ultramarine's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          最大子串和
+          求解最大子串和问题
         </h1>
 
         <div class="post-meta-container">
@@ -193,14 +193,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2023-01-22 11:22:24" itemprop="dateCreated datePublished" datetime="2023-01-22T11:22:24+08:00">2023-01-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-06 17:13:56" itemprop="dateModified" datetime="2023-10-06T17:13:56+08:00">2023-10-06</time>
+      <time title="创建时间：2022-10-22 11:22:24" itemprop="dateCreated datePublished" datetime="2022-10-22T11:22:24+08:00">2022-10-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -221,7 +214,12 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h4 id="1-1暴力枚举"><a href="#1-1暴力枚举" class="headerlink" title="*1.1暴力枚举*"></a><em><strong>*1.1暴力枚举*</strong></em></h4><h5 id="1-1-1基本思想"><a href="#1-1-1基本思想" class="headerlink" title="\1.1.1基本思想*"></a><em><strong>\1.1.1基本思想*</strong></em></h5><p>将问题的所有可能成为答案的解一一列举，然后根据问题所给出的条件判断此解是否合适，如果合适就保留，反之则舍弃。</p>
+    <div class="post-body" itemprop="articleBody"><p>本文利用求解最小子串和这一问题，来介绍三种常见的算法：暴力枚举、分治法和动态规划。在具体题目中体会这三种经典算法的基本思想、解题思路和算法设计。</p>
+<span id="more"></span>
+
+<h3 id="最小子串和问题"><a href="#最小子串和问题" class="headerlink" title="最小子串和问题"></a>最小子串和问题</h3><p>最小子串和问题是与最大子串和问题相反的一个问题。它要求找到数组中的一个连续子串，使得该子串的和尽可能小。与最大子串和问题类似，最小子串和问题也可以使用不同的算法来解决。</p>
+<p>解决最小子串和问题的思路与解决最大子串和问题的思路类似，但需要在计算子串和的过程中注意不同的条件和约束。通常，我们需要遍历数组，并在遍历的过程中更新最小子串和的候选值。</p>
+<h4 id="1-1-暴力枚举"><a href="#1-1-暴力枚举" class="headerlink" title="1.1 暴力枚举"></a>1.1 暴力枚举</h4><h5 id="1-1-1基本思想"><a href="#1-1-1基本思想" class="headerlink" title="1.1.1基本思想*"></a><em><strong>1.1.1基本思想*</strong></em></h5><p>将问题的所有可能成为答案的解一一列举，然后根据问题所给出的条件判断此解是否合适，如果合适就保留，反之则舍弃。</p>
 <h5 id="1-1-2解题思路"><a href="#1-1-2解题思路" class="headerlink" title="*1.1.2解题思路*"></a><em><strong>*1.1.2解题思路*</strong></em></h5><p>根据题意找到枚举变量；</p>
 <p>l 找到并尽量缩小范围（根据题意但无需太过精确，可以过大，条件在if中判断即可）；</p>
 <p>l 依据题意进行枚举遍历（尽量剪枝）。</p>
@@ -255,21 +253,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
               <a href="/tags/%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93/" rel="tag"># 刷题总结</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/08/30/hello-world/" rel="prev" title="Hello World">
-                  <i class="fa fa-angle-left"></i> Hello World
-                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/07/10/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%EF%BC%9AGraphCut-GrabCut-Deep-GrabCut%E8%AF%A6%E8%A7%A3/" rel="next" title="图像分割：GraphCut-GrabCut-Deep GrabCut详解">
-                  图像分割：GraphCut-GrabCut-Deep GrabCut详解 <i class="fa fa-angle-right"></i>
+                <a href="/2022/12/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="数据库学习笔记">
+                  数据库学习笔记 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>

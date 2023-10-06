@@ -125,12 +125,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -174,7 +174,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/07/10/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%EF%BC%9AGraphCut-GrabCut-Deep-GrabCut%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">图像分割：GraphCut-GrabCut-Deep GrabCut详解</a>
+          <a href="/2023/07/10/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%EF%BC%9AGraphCut-GrabCut-Deep-GrabCut%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">图像分割：GraphCut-GrabCut-DeepGrabCut详解</a>
         </h2>
 
         <div class="post-meta-container">
@@ -186,13 +186,6 @@
       <span class="post-meta-item-text">发表于</span>
 
       <time title="创建时间：2023-07-10 17:11:59" itemprop="dateCreated datePublished" datetime="2023-07-10T17:11:59+08:00">2023-07-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-06 17:15:07" itemprop="dateModified" datetime="2023-10-06T17:15:07+08:00">2023-10-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -214,89 +207,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="GraphCut-GrabCut-Deep-GrabCut"><a href="#GraphCut-GrabCut-Deep-GrabCut" class="headerlink" title="GraphCut-GrabCut-Deep GrabCut"></a>GraphCut-GrabCut-Deep GrabCut</h2><h3 id="1-GraphCut"><a href="#1-GraphCut" class="headerlink" title="1.GraphCut"></a>1.GraphCut</h3><p>提出论文：《Interactive graph cuts for optimal boundary and region segmentation of objects in N-D images》 (Boykov，iccv01)</p>
-<h4 id="1-1-主要思想"><a href="#1-1-主要思想" class="headerlink" title="1.1 主要思想"></a>1.1 主要思想</h4><ol>
-<li>首先，用户明确指出少量背景像素B和前景目标像素O。然后将图像建立为图（Graph），像素就是图上的节点(Node)。</li>
-<li>定义两个特殊的节点是T节点（background terminal, 表示背景）以及S节点(Object Terminal, 表示前景）。在所有节点之间建立连接。图像像素之间的连接称作n-links，像素到特殊节点之间的连接称作t-links</li>
-<li>为所有的连接赋以能量或权重。t-links的能量代表着一个像素有多么像前景或背景，所有下图中那些已经被标注为前景或背景的像素对应的t-links很粗。n-links的能量约束着像素之间是否会被分配为不同的区域，下图中如果相邻节点越有可能被分开，其连接越细，能量越小。</li>
-<li>一个cut（割）就是图中边集合E的一个子集C，那这个割的cost（表示为|C|）就是边子集C的所有边的权值的总和。Graph Cuts中的Cuts是指这样一个边的集合，很显然这些边集合包括了上面2种边，该集合中所有边的断开会导致残留”S”和”T”图的分开，所以就称为“割”。max-flow&#x2F;min-cut算法就可以用来获得s-t图的最小割，即其边的所有权值之和最小。这个最小割把图的顶点划分为两个不相交的子集S和T，其中s ∈S，t∈ T和S∪T&#x3D;V 。这两个子集就对应于图像的前景像素集和背景像素集，那就相当于完成了图像分割。</li>
-</ol>
-<h4 id="1-2-模型设计"><a href="#1-2-模型设计" class="headerlink" title="1.2 模型设计"></a>1.2 模型设计</h4><p>假设整幅图像可以表示为一系列灰度值（每个像素的灰度值）<strong>I</strong>&#x3D;{I1,I2,….Ip}，而整个图像的标签label（每个像素的label）为<strong>A</strong>&#x3D; {A1,A2,…,Ap }，其中Ai为0（背景）或者1（目标）。那假设图像的分割为A时，图像的能量可以表示为：</p>
-<img src="/.io//Graphcut1.png" alt="Graphcut1" style="zoom:50%;">
-
-<p>其中，R(A)为区域项（regional term），B(A)为边界项（boundary term），而a就是区域项和边界项之间的重要因子，决定它们对能量的影响大小。如果a为0，那么就只考虑边界因素，不考虑区域因素。E(A)表示的是权值，即损失函数，也叫能量函数，图割的目标就是优化能量函数使其值达到最小。</p>
-<p><strong>区域项：</strong></p>
-<p>其中表示为像素Ip分配标签Ap的惩罚，Rp(Ap)能量项的权值可以通过比较像素Ip的灰度和给定的目标和前景的灰度直方图来获得，换句话说就是像素Ip属于标签Ap的概率，我们希望像素Ip分配为其概率最大的标签Ap，这时候我们希望能量最小，所以一般取概率的负对数值，故t-link的权值如下：</p>
-<img src="/.io//Graphcut2.png" alt="Graphcut2" style="zoom:50%;">
-
-<p>​    由上面两个公式可以看到，当像素Ip的灰度值属于目标的概率Pr(Ip|’obj’)大于背景Pr(Ip|’bkg’)，那么Rp(1)就小于Rp(0)，也就是说当像素Ip更有可能属于目标时，将Ip归类为目标就会使能量R(A)小。那么，如果全部的像素都被正确划分为目标或者背景，那么这时候能量就是最小的</p>
-<p><strong>边界项：</strong></p>
-<img src="/.io//Graphcut3.png" alt="Graphcut3" style="zoom:50%;">
-
-<p>其中，p和q为邻域像素，边界平滑项主要体现分割L的边界属性，B可以解析为像素p和q之间不连续的惩罚，一般来说如果p和q越相似（例如它们的灰度），那么B越大，如果他们非常不同，那么B就接近于0。换句话说，如果两邻域像素差别很小，那么它属于同一个目标或者同一背景的可能性就很大，如果他们的差别很大，那说明这两个像素很有可能处于目标和背景的边缘部分，则被分割开的可能性比较大，所以当两邻域像素差别越大，B越小，即能量越小。</p>
-<h2 id="2-GrabCut"><a href="#2-GrabCut" class="headerlink" title="2.GrabCut"></a>2.GrabCut</h2><p>提出论文：《“GrabCut” — Interactive Foreground Extraction using Iterated Graph Cuts》</p>
-<h4 id="2-1-主要思想"><a href="#2-1-主要思想" class="headerlink" title="2.1 主要思想"></a>2.1 主要思想</h4><ol>
-<li>Graph Cut的目标和背景的模型是灰度直方图，Grab Cut取代为RGB三通道的混合高斯模型GMM；</li>
-<li>Graph Cut的能量最小化（分割）是一次达到的，而Grab Cut取代为一个不断进行分割估计和模型参数学习的交互迭代过程；</li>
-<li>Graph Cut需要用户指定目标和背景的一些种子点，但是Grab Cut只需要提供背景区域的像素集就可以了。也就是说你只需要框选目标，那么在方框外的像素全部当成背景，这时候就可以对GMM进行建模和完成良好的分割了。即Grab Cut允许不完全的标注（incomplete labelling）。</li>
-</ol>
-<h4 id="2-2-模型设计"><a href="#2-2-模型设计" class="headerlink" title="2.2 模型设计"></a>2.2 模型设计</h4><p>我们采用RGB颜色空间，分别用一个K个高斯分量（一取般K&#x3D;5）的全协方差GMM（混合高斯模型）来对目标和背景进行建模。于是就存在一个额外的向量<strong>k</strong> &#x3D; {k1, . . ., kn, . . ., kN}，其中kn就是第n个像素对应于哪个高斯分量，kn∈ {1, . . . K}。对于每个像素，其来自于目标GMM的某个高斯分量，或者背景GMM的某个高斯分量。</p>
-<p>所以用于整个图像的Gibbs能量为</p>
-<img src="/.io//Grabcut1.png" alt="Grabcut1" style="zoom:50%;">
-
-<p><strong>区域项</strong></p>
-<p>表示一个像素被归类为目标或者背景的惩罚，也就是某个像素属于目标或者背景的概率的负对数。我们知道混合高斯密度模型是如下形式</p>
-<img src="/.io//Grabcut2.png" alt="Grabcut2" style="zoom:50%;">
-
-<p>取负对数之后就变成式（9）那样的形式了，其中GMM的参数<strong>θ</strong>就有三个：每一个高斯分量的权重π、每个高斯分量的均值向量<strong>u</strong>（因为有RGB三个通道，故为三个元素向量）和协方差矩阵<strong>∑</strong>（因为有RGB三个通道，故为3x3矩阵）。如式（10）。也就是说描述目标的GMM和描述背景的GMM的这三个参数都需要学习确定。一旦确定了这三个参数，那么我们知道一个像素的RGB颜色值之后，就可以代入目标的GMM和背景的GMM，就可以得到该像素分别属于目标和背景的概率了，也就是Gibbs能量的区域能量项。</p>
-<p><strong>区域项：</strong></p>
-<img src="/.io//Grabcut3.png" alt="Grabcut3" style="zoom: 25%;">
-
-<p>体现邻域像素m和n之间不连续的惩罚，如果两邻域像素差别很小，那么它属于同一个目标或者同一背景的可能性就很大，如果他们的差别很大，那说明这两个像素很有可能处于目标和背景的边缘部分，则被分割开的可能性比较大，所以当两邻域像素差别越大，能量越小。而在RGB空间中，衡量两像素的相似性，我们采用欧式距离（二范数）。这里面的参数β由图像的对比度决定，可以想象，如果图像的对比度较低，也就是说本身有差别的像素m和n，它们的差||zm-zn||还是比较低，那么我们需要乘以一个比较大的β来放大这种差别，而对于对比度高的图像，那么也许本身属于同一目标的像素m和n的差||zm-zn||还是比较高，那么我们就需要乘以一个比较小的β来缩小这种差别，使得V项能在对比度高或者低的情况下都可以正常工作。常数γ一般可设为50（经过作者用15张图像训练得到的比较好的值）。</p>
-<h4 id="2-3-算法流程"><a href="#2-3-算法流程" class="headerlink" title="2.3 算法流程"></a>2.3 算法流程</h4><img src="/.io//Grabcut algorithm-flow.png" alt="Grabcut algorithm-flow" style="zoom:50%;">
-
-<p><strong>1.初始化</strong></p>
-<ul>
-<li>用户通过直接框选目标来得到一个初始的trimap T，即方框外的像素全部作为背景像素TB，而方框内TU的像素全部作为“可能是目标”的像素。</li>
-<li>对TB内的每一像素n，初始化像素n的标签αn&#x3D;0，即为背景像素；而对TU内的每个像素n，初始化像素n的标签αn&#x3D;1，即作为“可能是目标”的像素。</li>
-<li>通过初始划分的像素来估计目标和背景的GMM了。我们可以通过k-means算法分别把属于目标和背景的像素聚类为K类，即GMM中的K个高斯模型，这时候GMM中每个高斯模型就具有了一些像素样本集，这时候它的参数均值和协方差就可以通过他们的RGB值估计得到，而该高斯分量的权值可以通过属于该高斯分量的像素个数与总的像素个数的比值来确定。</li>
-</ul>
-<p><strong>2.迭代最小化</strong></p>
-<ol>
-<li>对每个像素分配GMM中的高斯分量（例如像素n是目标像素，那么把像素n的RGB值代入目标GMM中的每一个高斯分量中，概率最大的那个就是最有可能生成n的，也即像素n的第kn个高斯分量）</li>
-<li>对于给定的图像数据z，学习优化GMM的参数（因为在步骤1中我们已经为每个像素归为哪个高斯分量做了归类，那么每个高斯模型就具有了一些像素样本集，这时候它的参数均值和协方差就可以通过这些像素样本的RGB值估计得到，而该高斯分量的权值可以通过属于该高斯分量的像素个数与总的像素个数的比值来确定。）</li>
-<li>分割估计（建立图，分析的Gibbs能量项，并求出权值t-link和n-link，然后通过max flow&#x2F;min cut算法来进行分割）</li>
-<li>重复步骤1到3，直到收敛。经过3的分割后，每个像素属于目标GMM还是背景GMM就变了，所以每个像素的kn就变了，故GMM也变了，所以每次的迭代会交互地优化GMM模型和分割结果。另外，因为步骤1到3的过程都是能量递减的过程，所以可以保证迭代过程会收敛。</li>
-<li>采用border matting对分割的边界进行平滑等等后期处理。</li>
-</ol>
-<p><strong>3. 用户编辑（交互）</strong></p>
-<ul>
-<li>编辑：人为地固定一些像素是目标或者背景像素，然后再执行一次2中步骤3；</li>
-<li>重操作：重复整个迭代算法。</li>
-</ul>
-<h2 id="3-Deep-GrabCut"><a href="#3-Deep-GrabCut" class="headerlink" title="3.Deep GrabCut"></a>3.Deep GrabCut</h2><h4 id="3-1-主要思想"><a href="#3-1-主要思想" class="headerlink" title="3.1 主要思想"></a>3.1 主要思想</h4><ol>
-<li>将 bbox 转换为欧式距离图（大小与输入的图像大小一致），将其作为一种软约束，在输入训练网络时，只需要将该欧式距离图和原 RGB 图像连接起来（即在通道数上进行扩展）</li>
-<li>构建卷积编码器-解码器的网络(convolutional encoder-decoder network) 作为模型框架，通过将含有距离图的图像作为输入，进行模型的训练。</li>
-</ol>
-<img src="/.io//DeepGrabCut framework.png" alt="DeepGrabCut framework" style="zoom:50%;">
-
-<h4 id="3-2-模型设计"><a href="#3-2-模型设计" class="headerlink" title="3.2 模型设计"></a>3.2 模型设计</h4><h5 id="1-矩形采样"><a href="#1-矩形采样" class="headerlink" title="1. 矩形采样"></a>1. 矩形采样</h5><p>通过采样各个分割目标的矩形框，扩充出一个训练集，同时还能保证不会过拟合。</p>
-<img src="/.io//DeepGrabCut1.png" alt="DeepGrabCut1" style="zoom:50%;">
-
-<h5 id="2-矩形转换"><a href="#2-矩形转换" class="headerlink" title="2. 矩形转换"></a>2. 矩形转换</h5><p>给定图像 L 中的一个目标物体矩形框 B，定义矩形框 B 上的 pixel 为一个像素集合：Se &#x3D; { pi∣pi is on the  edge of B } ，其中 pi 表示了像素 i 的位置。</p>
-<p>同样地，<br>定义矩形框 B 内(inside)的 pixel 为一个像素集合：Si</p>
-<p>定义矩形框 B 外(outside)的 pixel 为一个像素集合：So</p>
-<p>创建 2D 图像的 distance map D，该 distance map 与原图像有着相同的宽度和高度</p>
-<p>distance map D中，位置 pi 的像素距离计算：</p>
-<img src="/.io//DeepGrabCut2.png" alt="DeepGrabCut2" style="zoom:50%;">
-
-<p>其中，∣ ⋅ ∣为欧几里得距离，本文使用有符号的距离变换来捕获输入矩形框的上下文信息。考虑到存储效率，将距离 D DD 截取到 0 ~ 255，最后将 distance map D 和 RGB 图像进行连接，送入训练网络进行训练。</p>
-<h5 id="3-CEDN-model-training"><a href="#3-CEDN-model-training" class="headerlink" title="3. CEDN model training"></a>3. CEDN model training</h5><p>输入： RGB 与 distance map D 的 4 通道连接图<br>输出： 二值分割结果</p>
-<p>CEDN model（Convolutional Encoder-Decoder Network）包含两个部分：encoder &amp; decoder</p>
-<p>Encoder： 由 convolutional layer 和 max-pooling layer 组成，作用是提取深层信息，将输入图片逐渐抽象成更小的 feature map。</p>
-<p>Decoder： 由 convolutional layer 和 unpooling layer 组成，作用是根据 feature map 重建图像细节信息，还原到输入图像的大小</p>
-<p>论文中，使用 VGG-16 的前 14 层参数来初始化 encoder 网络，而且由于 VGG 输入图像是三通道的，这里是 4 通道，所以第一层 convolutional filters 的第四通道参数初始化为 0。decoder的网络结构比encoder 更加简洁，以减少冗余的参数并加快训练。其中decoder的参数由 Xavier 初始化，为解决过拟合问题，decoder 网络中在每个 conv layer 后都使用了 dropout 层。此外，在每个 training epoch 的开始阶段，随机地对所有训练数据进行重新采样。</p>
-
+          <p>在计算机视觉领域，图像分割是一项关键任务，用于将图像中的目标对象从背景中准确提取出来。为了实现这一目标，研究人员开发了多种不同的图像分割方法。本文将介绍三种常见的图像分割方法：GraphCut、GrabCut和Deep GrabCut。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/10/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%EF%BC%9AGraphCut-GrabCut-Deep-GrabCut%E8%AF%A6%E8%A7%A3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -322,7 +241,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/">
+    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2022/12/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -340,7 +259,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/" class="post-title-link" itemprop="url">最大子串和</a>
+          <a href="/2022/12/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">数据库学习笔记</a>
         </h2>
 
         <div class="post-meta-container">
@@ -351,14 +270,92 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2023-01-22 11:22:24" itemprop="dateCreated datePublished" datetime="2023-01-22T11:22:24+08:00">2023-01-22</time>
+      <time title="创建时间：2022-12-16 17:18:43" itemprop="dateCreated datePublished" datetime="2022-12-16T17:18:43+08:00">2022-12-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
+        <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-06 17:13:56" itemprop="dateModified" datetime="2023-10-06T17:13:56+08:00">2023-10-06</time>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本文为个人数据库原理课程的学习笔记汇总，其中主要整理了数据库基础知识、数据模型、SQL语言、数据库设计、数据库管理等内容。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2022/10/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ultramarine">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ultramarine's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | ultramarine's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/" class="post-title-link" itemprop="url">求解最大子串和问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-10-22 11:22:24" itemprop="dateCreated datePublished" datetime="2022-10-22T11:22:24+08:00">2022-10-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -380,113 +377,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h4 id="1-1暴力枚举"><a href="#1-1暴力枚举" class="headerlink" title="*1.1暴力枚举*"></a><em><strong>*1.1暴力枚举*</strong></em></h4><h5 id="1-1-1基本思想"><a href="#1-1-1基本思想" class="headerlink" title="\1.1.1基本思想*"></a><em><strong>\1.1.1基本思想*</strong></em></h5><p>将问题的所有可能成为答案的解一一列举，然后根据问题所给出的条件判断此解是否合适，如果合适就保留，反之则舍弃。</p>
-<h5 id="1-1-2解题思路"><a href="#1-1-2解题思路" class="headerlink" title="*1.1.2解题思路*"></a><em><strong>*1.1.2解题思路*</strong></em></h5><p>根据题意找到枚举变量；</p>
-<p>l 找到并尽量缩小范围（根据题意但无需太过精确，可以过大，条件在if中判断即可）；</p>
-<p>l 依据题意进行枚举遍历（尽量剪枝）。</p>
-<h5 id="1-1-3算法设计"><a href="#1-1-3算法设计" class="headerlink" title="*1.1.3算法设计*"></a><em><strong>*1.1.3算法设计*</strong></em></h5><p>基于暴力枚举法的思想，为求数组的最大子串和，我们可以枚举出该数组的每一个子串，然后求和，从而可以达到最大的子串和。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int max_subsequence_sum(int a[],int n)</span><br><span class="line">&#123;</span><br><span class="line">    int thissum,maxsum,i,j,k;</span><br><span class="line">    maxsum=0;</span><br><span class="line">    for(i=0;i&lt;n;i++) </span><br><span class="line">    &#123;</span><br><span class="line">        thissum=0;</span><br><span class="line">        for(j=i;j&lt;n;j++) </span><br><span class="line">        &#123;</span><br><span class="line">            thissum+=a[j];</span><br><span class="line">            if(thissum&gt;maxsum)</span><br><span class="line">            maxsum=thissum;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return maxsum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="1-2-分治法"><a href="#1-2-分治法" class="headerlink" title="*1.2 分治法*"></a><em><strong>*1.2 分治法*</strong></em></h4><h5 id="1-2-1基本思想"><a href="#1-2-1基本思想" class="headerlink" title="*1.2.1基本思想*"></a><em><strong>*1.2.1基本思想*</strong></em></h5><p>分治，就是分而治之，就是把一个问题分成两个或更多的相同或相似的子问题，再把子问题分成更小的子问题，直到最后子问题可以简单的直接求解，原问题的解即子问题解的合并，其中子问题的解是独立互不影响的。</p>
-<h5 id="1-2-2解题思路"><a href="#1-2-2解题思路" class="headerlink" title="*1.2.2解题思路*"></a><em><strong>*1.2.2解题思路*</strong></em></h5><p>分：递归的解决较小的问题（到终止层或者可以解决的时候停下）；</p>
-<p>治：递归求解，如果问题够小直接求解；</p>
-<p>合并：将小问题的解合并为更大问题的解，并自底向上逐步求出原问题的解。</p>
-<h5 id="1-2-3算法设计"><a href="#1-2-3算法设计" class="headerlink" title="*1.2.3算法设计*"></a><em><strong>*1.2.3算法设计*</strong></em></h5><p>在求解最大子串和的问题中，分就是利用二分法不断将原数组分为左右两个数组，直到分成的数组只有一个数的过程。此时该子串的最大子串和就是其本身。之后将所划分的子串逐级合并，并在此过程中递归求解，较大的数组的最大子串和就是所划分的前后两个数组各自的最大子串和与起始点在前一数组而终止点在后一数组的最大子串和三者中最大的一个。通过不断迭代最终得到原数组的最大子串和。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">int max_subsequence_sum(int a[],int left,int right)</span><br><span class="line">&#123;</span><br><span class="line">    //只含一个数时最大子串和即其自身</span><br><span class="line">    if(left==right)</span><br><span class="line">        return a[left];</span><br><span class="line">    int leftmax,rightmax;</span><br><span class="line">    int mid=(left+right)/2;</span><br><span class="line">    //递归求左子串的最大子串和</span><br><span class="line">    leftmax=max_subsequence_sum(a,left,mid);</span><br><span class="line">    //递归求右子串的最大子串和</span><br><span class="line">    rightmax=max_subsequence_sum(a,mid+1,right);</span><br><span class="line">    //计算左边的最大后缀</span><br><span class="line">    int mid_leftmax=INT_MIN;</span><br><span class="line">    int mid_leftsum=0;</span><br><span class="line">    for (int i=mid;i&gt;=left;i--)</span><br><span class="line">    &#123;</span><br><span class="line">        mid_leftsum+=a[i];</span><br><span class="line">        if(mid_leftmax&lt;mid_leftsum)</span><br><span class="line">            mid_leftmax=mid_leftsum;</span><br><span class="line">    &#125;</span><br><span class="line">    //计算右边的最大前缀</span><br><span class="line">    int mid_rightmax=INT_MIN;</span><br><span class="line">    int mid_rightsum=0;</span><br><span class="line">    for(int i=mid+1;i&lt;=right;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        mid_rightsum+=a[i];</span><br><span class="line">        if(mid_rightsum&gt;mid_rightmax)</span><br><span class="line">            mid_rightmax=mid_rightsum;</span><br><span class="line">    &#125;</span><br><span class="line">    //左右相加得到中间的最大子串和</span><br><span class="line">    int midmax=mid_leftmax+mid_rightmax;</span><br><span class="line"></span><br><span class="line">    return max(max(leftmax,rightmax),midmax);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="1-3-动态规划"><a href="#1-3-动态规划" class="headerlink" title="*1.3 动态规划*"></a><em><strong>*1.3 动态规划*</strong></em></h4><h5 id="1-3-1基本思想"><a href="#1-3-1基本思想" class="headerlink" title="*1.3.1基本思想*"></a><em><strong>*1.3.1基本思想*</strong></em></h5><p>动态规划是通过将一个问题拆分为多个子问题，根据不同子问题间的状态关系来确定一个状态转移方程，使得该问题得到分治解决。在按顺序求解子问题时，可以得到多个局部解，要通过决策来确定这些解中的最优解，最终通过一步一步的递推求得最终问题关系。</p>
-<h5 id="1-3-2解题思路"><a href="#1-3-2解题思路" class="headerlink" title="*1.3.2解题思路*"></a><em><strong>*1.3.2解题思路*</strong></em></h5><p>l 划分阶段，根据问题的特征，将问题分为若干个存在一定关系的子阶段；</p>
-<p>l 确定状态和状态变量，表示出各个阶段的问题状态；</p>
-<p>l 确定决策变量和状态转移方程，根据各状态之间的关系写出状态转移方程，并以此来确定该阶段的最优解；</p>
-<p>l 给出初始条件和边界情况，如迭代次数等；</p>
-<p>l 根据某一计算顺序计算。</p>
-<h5 id="1-3-3算法设计"><a href="#1-3-3算法设计" class="headerlink" title="*1.3.3算法设计*"></a><em><strong>*1.3.3算法设计*</strong></em></h5><p>在该问题中，由于要求最大子串和，所以肯定需要遍历数组，所以我们可以将遍历的每一步看做一个状态，状态变量就是当前已遍历的子串和。如果当前遍历的子串和大于我们定义的最大子串和就对其进行更新，如果当前遍历的子串和小于0，说明使之后的子串求变小，所以将当前子串和赋值为0，然后继续遍历求和。直至到达边界条件即数组全部遍历。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int max_subsequence_sum(int a[],int n)</span><br><span class="line">&#123;</span><br><span class="line">    int thissum,maxsum,i;</span><br><span class="line">    maxsum=0;</span><br><span class="line">    for(i=0;i&lt;n;i++) </span><br><span class="line">    &#123;</span><br><span class="line">        thissum+=a[i];</span><br><span class="line">        if(thissum&gt;maxsum) </span><br><span class="line">            maxsum=thissum;</span><br><span class="line">        else if(thissum&lt;0) </span><br><span class="line">        &#123;</span><br><span class="line">            thissum=0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return maxsum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="1-5实验结果"><a href="#1-5实验结果" class="headerlink" title="*1.5实验结果*"></a><em><strong>*1.5实验结果*</strong></em></h4><h3 id="2-c-用法积累"><a href="#2-c-用法积累" class="headerlink" title="2.c++用法积累"></a><em><strong>2.c++用法积累</strong></em></h3><h4 id="2-1c-中随机数的生成"><a href="#2-1c-中随机数的生成" class="headerlink" title="2.1c++中随机数的生成"></a><em><strong>2.1c++中随机数的生成</strong></em></h4><h5 id="2-1-1使用cstdlib库"><a href="#2-1-1使用cstdlib库" class="headerlink" title="2.1.1使用cstdlib库"></a><em><strong>2.1.1使用cstdlib库</strong></em></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;//产生 [0,b) 范围内到随机数  </span><br><span class="line">  int randoxNumber = rand() % b ;</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [a,b) 范围内到随机数 </span><br><span class="line">    int randoxNumber = a + rand() % ( b -a ) ;</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [a,b] 范围内到随机数 </span><br><span class="line">    int randoxNumber = a + rand() % ( b -a +1 ) ;</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [0,1] 范围内到随机小数 </span><br><span class="line">    double randoxNumber =rand() / RAND_MAX</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [0,1) 范围内到随机小数 </span><br><span class="line">    double randoxNumber =rand() / ( RAND_MAX +1 )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2022/08/30/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ultramarine">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ultramarine's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | ultramarine's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/08/30/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-08-30 14:43:21" itemprop="dateCreated datePublished" datetime="2022-08-30T14:43:21+08:00">2022-08-30</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
+          <p>本文利用求解最小子串和这一问题，来介绍三种常见的算法：暴力枚举、分治法和动态规划。在具体题目中体会这三种经典算法的基本思想、解题思路和算法设计。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/22/%E6%9C%80%E5%A4%A7%E5%AD%90%E4%B8%B2%E5%92%8C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
