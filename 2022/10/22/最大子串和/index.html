@@ -27,7 +27,7 @@
 <meta property="og:description" content="本文利用求解最小子串和这一问题，来介绍三种常见的算法：暴力枚举、分治法和动态规划。在具体题目中体会这三种经典算法的基本思想、解题思路和算法设计。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-22T03:22:24.000Z">
-<meta property="article:modified_time" content="2023-10-06T13:21:25.966Z">
+<meta property="article:modified_time" content="2023-10-07T12:59:02.196Z">
 <meta property="article:author" content="Ultramarine">
 <meta property="article:tag" content="刷题总结">
 <meta property="article:tag" content="算法">
@@ -113,7 +113,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%AD%90%E4%B8%B2%E5%92%8C%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">最小子串和问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 暴力枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1基本思想*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">1.1.2.</span> <span class="nav-text">*1.1.2解题思路*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.1.3.</span> <span class="nav-text">*1.1.3算法设计*</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">*1.2 分治法*</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">*1.2.1基本思想*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">*1.2.2解题思路*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">*1.2.3算法设计*</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">1.3.</span> <span class="nav-text">*1.3 动态规划*</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">*1.3.1基本思想*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">*1.3.2解题思路*</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1-2"><span class="nav-number">1.3.3.</span> <span class="nav-text">*1.3.3算法设计*</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">1.4.</span> <span class="nav-text">*1.5实验结果*</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c%E7%94%A8%E6%B3%95%E7%A7%AF%E7%B4%AF"><span class="nav-number">2.</span> <span class="nav-text">2.c++用法积累</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#c%E4%B8%AD%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%9A%84%E7%94%9F%E6%88%90"><span class="nav-number">2.1.</span> <span class="nav-text">2.1c++中随机数的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8cstdlib%E5%BA%93"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1使用cstdlib库</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%AD%90%E4%B8%B2%E5%92%8C%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">最小子串和问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E6%9E%9A%E4%B8%BE"><span class="nav-number">2.</span> <span class="nav-text">1. 暴力枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 基本思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 解题思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 算法设计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">2. 分治法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-1"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 基本思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-1"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 解题思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1-1"><span class="nav-number">3.3.</span> <span class="nav-text">2.3 算法设计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">4.</span> <span class="nav-text">3. 动态规划</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-2"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 基本思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-2"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 解题思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1-2"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 算法设计</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -219,43 +219,44 @@
 <h3 id="最小子串和问题">最小子串和问题</h3>
 <p>最小子串和问题是与最大子串和问题相反的一个问题。它要求找到数组中的一个连续子串，使得该子串的和尽可能小。与最大子串和问题类似，最小子串和问题也可以使用不同的算法来解决。</p>
 <p>解决最小子串和问题的思路与解决最大子串和问题的思路类似，但需要在计算子串和的过程中注意不同的条件和约束。通常，我们需要遍历数组，并在遍历的过程中更新最小子串和的候选值。</p>
-<h4 id="暴力枚举">1.1 暴力枚举</h4>
-<h5 id="基本思想"><strong><em>1.1.1基本思想*</em></strong></h5>
+<h3 id="暴力枚举">1. 暴力枚举</h3>
+<h4 id="基本思想">1.1 基本思想</h4>
 <p>将问题的所有可能成为答案的解一一列举，然后根据问题所给出的条件判断此解是否合适，如果合适就保留，反之则舍弃。</p>
-<h5 id="解题思路"><strong><em>*1.1.2解题思路*</em></strong></h5>
-<p>根据题意找到枚举变量；</p>
-<p>l 找到并尽量缩小范围（根据题意但无需太过精确，可以过大，条件在if中判断即可）；</p>
-<p>l 依据题意进行枚举遍历（尽量剪枝）。</p>
-<h5 id="算法设计"><strong><em>*1.1.3算法设计*</em></strong></h5>
+<h4 id="解题思路">1.2 解题思路</h4>
+<ol type="1">
+<li><p>根据题意找到枚举变量；</p></li>
+<li><p>找到并尽量缩小范围（根据题意但无需太过精确，可以过大，条件在if中判断即可）；</p></li>
+<li><p>依据题意进行枚举遍历（尽量剪枝）。</p></li>
+</ol>
+<h4 id="算法设计">1.3 算法设计</h4>
 <p>基于暴力枚举法的思想，为求数组的最大子串和，我们可以枚举出该数组的每一个子串，然后求和，从而可以达到最大的子串和。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int max_subsequence_sum(int a[],int n)</span><br><span class="line">&#123;</span><br><span class="line">    int thissum,maxsum,i,j,k;</span><br><span class="line">    maxsum=0;</span><br><span class="line">    for(i=0;i&lt;n;i++) </span><br><span class="line">    &#123;</span><br><span class="line">        thissum=0;</span><br><span class="line">        for(j=i;j&lt;n;j++) </span><br><span class="line">        &#123;</span><br><span class="line">            thissum+=a[j];</span><br><span class="line">            if(thissum&gt;maxsum)</span><br><span class="line">            maxsum=thissum;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return maxsum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="分治法"><strong><em>*1.2 分治法*</em></strong></h4>
-<h5 id="基本思想-1"><strong><em>*1.2.1基本思想*</em></strong></h5>
+<h3 id="分治法">2. 分治法</h3>
+<h4 id="基本思想-1">2.1 基本思想</h4>
 <p>分治，就是分而治之，就是把一个问题分成两个或更多的相同或相似的子问题，再把子问题分成更小的子问题，直到最后子问题可以简单的直接求解，原问题的解即子问题解的合并，其中子问题的解是独立互不影响的。</p>
-<h5 id="解题思路-1"><strong><em>*1.2.2解题思路*</em></strong></h5>
-<p>分：递归的解决较小的问题（到终止层或者可以解决的时候停下）；</p>
-<p>治：递归求解，如果问题够小直接求解；</p>
-<p>合并：将小问题的解合并为更大问题的解，并自底向上逐步求出原问题的解。</p>
-<h5 id="算法设计-1"><strong><em>*1.2.3算法设计*</em></strong></h5>
+<h4 id="解题思路-1">2.2 解题思路</h4>
+<ol type="1">
+<li><p>分：递归的解决较小的问题（到终止层或者可以解决的时候停下）；</p></li>
+<li><p>治：递归求解，如果问题够小直接求解；</p></li>
+<li><p>合并：将小问题的解合并为更大问题的解，并自底向上逐步求出原问题的解。</p></li>
+</ol>
+<h4 id="算法设计-1">2.3 算法设计</h4>
 <p>在求解最大子串和的问题中，分就是利用二分法不断将原数组分为左右两个数组，直到分成的数组只有一个数的过程。此时该子串的最大子串和就是其本身。之后将所划分的子串逐级合并，并在此过程中递归求解，较大的数组的最大子串和就是所划分的前后两个数组各自的最大子串和与起始点在前一数组而终止点在后一数组的最大子串和三者中最大的一个。通过不断迭代最终得到原数组的最大子串和。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">int max_subsequence_sum(int a[],int left,int right)</span><br><span class="line">&#123;</span><br><span class="line">    //只含一个数时最大子串和即其自身</span><br><span class="line">    if(left==right)</span><br><span class="line">        return a[left];</span><br><span class="line">    int leftmax,rightmax;</span><br><span class="line">    int mid=(left+right)/2;</span><br><span class="line">    //递归求左子串的最大子串和</span><br><span class="line">    leftmax=max_subsequence_sum(a,left,mid);</span><br><span class="line">    //递归求右子串的最大子串和</span><br><span class="line">    rightmax=max_subsequence_sum(a,mid+1,right);</span><br><span class="line">    //计算左边的最大后缀</span><br><span class="line">    int mid_leftmax=INT_MIN;</span><br><span class="line">    int mid_leftsum=0;</span><br><span class="line">    for (int i=mid;i&gt;=left;i--)</span><br><span class="line">    &#123;</span><br><span class="line">        mid_leftsum+=a[i];</span><br><span class="line">        if(mid_leftmax&lt;mid_leftsum)</span><br><span class="line">            mid_leftmax=mid_leftsum;</span><br><span class="line">    &#125;</span><br><span class="line">    //计算右边的最大前缀</span><br><span class="line">    int mid_rightmax=INT_MIN;</span><br><span class="line">    int mid_rightsum=0;</span><br><span class="line">    for(int i=mid+1;i&lt;=right;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        mid_rightsum+=a[i];</span><br><span class="line">        if(mid_rightsum&gt;mid_rightmax)</span><br><span class="line">            mid_rightmax=mid_rightsum;</span><br><span class="line">    &#125;</span><br><span class="line">    //左右相加得到中间的最大子串和</span><br><span class="line">    int midmax=mid_leftmax+mid_rightmax;</span><br><span class="line"></span><br><span class="line">    return max(max(leftmax,rightmax),midmax);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="动态规划"><strong><em>*1.3 动态规划*</em></strong></h4>
-<h5 id="基本思想-2"><strong><em>*1.3.1基本思想*</em></strong></h5>
+<h3 id="动态规划">3. 动态规划</h3>
+<h4 id="基本思想-2">3.1 基本思想</h4>
 <p>动态规划是通过将一个问题拆分为多个子问题，根据不同子问题间的状态关系来确定一个状态转移方程，使得该问题得到分治解决。在按顺序求解子问题时，可以得到多个局部解，要通过决策来确定这些解中的最优解，最终通过一步一步的递推求得最终问题关系。</p>
-<h5 id="解题思路-2"><strong><em>*1.3.2解题思路*</em></strong></h5>
-<p>l 划分阶段，根据问题的特征，将问题分为若干个存在一定关系的子阶段；</p>
-<p>l 确定状态和状态变量，表示出各个阶段的问题状态；</p>
-<p>l 确定决策变量和状态转移方程，根据各状态之间的关系写出状态转移方程，并以此来确定该阶段的最优解；</p>
-<p>l 给出初始条件和边界情况，如迭代次数等；</p>
-<p>l 根据某一计算顺序计算。</p>
-<h5 id="算法设计-2"><strong><em>*1.3.3算法设计*</em></strong></h5>
+<h4 id="解题思路-2">3.2 解题思路</h4>
+<ol type="1">
+<li><p>划分阶段，根据问题的特征，将问题分为若干个存在一定关系的子阶段；</p></li>
+<li><p>确定状态和状态变量，表示出各个阶段的问题状态；</p></li>
+<li><p>确定决策变量和状态转移方程，根据各状态之间的关系写出状态转移方程，并以此来确定该阶段的最优解；</p></li>
+<li><p>给出初始条件和边界情况，如迭代次数等；</p></li>
+<li><p>根据某一计算顺序计算。</p></li>
+</ol>
+<h4 id="算法设计-2">3.3 算法设计</h4>
 <p>在该问题中，由于要求最大子串和，所以肯定需要遍历数组，所以我们可以将遍历的每一步看做一个状态，状态变量就是当前已遍历的子串和。如果当前遍历的子串和大于我们定义的最大子串和就对其进行更新，如果当前遍历的子串和小于0，说明使之后的子串求变小，所以将当前子串和赋值为0，然后继续遍历求和。直至到达边界条件即数组全部遍历。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int max_subsequence_sum(int a[],int n)</span><br><span class="line">&#123;</span><br><span class="line">    int thissum,maxsum,i;</span><br><span class="line">    maxsum=0;</span><br><span class="line">    for(i=0;i&lt;n;i++) </span><br><span class="line">    &#123;</span><br><span class="line">        thissum+=a[i];</span><br><span class="line">        if(thissum&gt;maxsum) </span><br><span class="line">            maxsum=thissum;</span><br><span class="line">        else if(thissum&lt;0) </span><br><span class="line">        &#123;</span><br><span class="line">            thissum=0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return maxsum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="实验结果"><strong><em>*1.5实验结果*</em></strong></h4>
-<h3 id="c用法积累"><strong><em>2.c++用法积累</em></strong></h3>
-<h4 id="c中随机数的生成"><strong><em>2.1c++中随机数的生成</em></strong></h4>
-<h5 id="使用cstdlib库"><strong><em>2.1.1使用cstdlib库</em></strong></h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;//产生 [0,b) 范围内到随机数  </span><br><span class="line">  int randoxNumber = rand() % b ;</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [a,b) 范围内到随机数 </span><br><span class="line">    int randoxNumber = a + rand() % ( b -a ) ;</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [a,b] 范围内到随机数 </span><br><span class="line">    int randoxNumber = a + rand() % ( b -a +1 ) ;</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [0,1] 范围内到随机小数 </span><br><span class="line">    double randoxNumber =rand() / RAND_MAX</span><br><span class="line">&#125;</span><br><span class="line">&#123;//产生 [0,1) 范围内到随机小数 </span><br><span class="line">    double randoxNumber =rand() / ( RAND_MAX +1 )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
     </div>
 
