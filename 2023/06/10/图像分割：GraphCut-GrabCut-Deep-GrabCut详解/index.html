@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://ultramarine-indigo.github.io/.io//Grabcut%20algorithm-flow.png">
 <meta property="og:image" content="http://ultramarine-indigo.github.io/.io//DeepGrabCut-framework.png">
 <meta property="article:published_time" content="2023-06-10T09:11:59.000Z">
-<meta property="article:modified_time" content="2023-10-07T15:42:44.680Z">
+<meta property="article:modified_time" content="2023-10-07T16:30:16.454Z">
 <meta property="article:author" content="Ultramarine">
 <meta property="article:tag" content="CV">
 <meta property="article:tag" content="图像分割">
@@ -394,7 +394,7 @@ mjx-container[display="true"] + br {
 </figure>
 <h4 id="主要思想-2">3.1 主要思想</h4>
 <ol type="1">
-<li>将 bbox 转换为欧式距离图（大小与输入的图像大小一致），将其作为一种软约束，在输入训练网络时，只需要将该欧式距离图和原 RGB 图像连接起来（即在通道数上进行扩展）</li>
+<li>将RGB转换为欧式距离图（大小与输入的图像大小一致），将其作为一种软约束，在输入训练网络时，只需要将该欧式距离图和原 RGB 图像连接起来（即在通道数上进行扩展）</li>
 <li>构建卷积编码器-解码器的网络(convolutional encoder-decoder network) 作为模型框架，通过将含有距离图的图像作为输入，进行模型的训练。</li>
 </ol>
 <h5 id="矩形采样">1. 矩形采样</h5>
