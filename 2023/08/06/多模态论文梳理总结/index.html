@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ultramarine-indigo.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.18.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="多模态指的是多种模态的信息数据，包括：文本、图像、视频、音频等。多模态任务是指需要同时处理两种或多种不同类型的数据的任务。VIT（Vision Transformer）和CLIP（Contrastive Language–Image Pre-training）这两种基于Transformer模型的出现，极大地推动了多模态研究的发展。正是由于Transformer能够对不同模态的数据进行统一建模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多模态论文梳理总结">
+<meta property="og:url" content="http://ultramarine-indigo.github.io/2023/08/06/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="ultramarine&#39;s Blog">
+<meta property="og:description" content="多模态指的是多种模态的信息数据，包括：文本、图像、视频、音频等。多模态任务是指需要同时处理两种或多种不同类型的数据的任务。VIT（Vision Transformer）和CLIP（Contrastive Language–Image Pre-training）这两种基于Transformer模型的出现，极大地推动了多模态研究的发展。正是由于Transformer能够对不同模态的数据进行统一建模">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BEITv3-transfer.png">
+<meta property="article:published_time" content="2023-08-06T14:11:45.000Z">
+<meta property="article:modified_time" content="2023-11-07T01:49:49.521Z">
+<meta property="article:author" content="Ultramarine">
+<meta property="article:tag" content="多模态">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BEITv3-transfer.png">
+
+
+<link rel="canonical" href="http://ultramarine-indigo.github.io/2023/08/06/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2023/08/06/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93/","path":"2023/08/06/多模态论文梳理总结/","title":"多模态论文梳理总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>多模态论文梳理总结 | ultramarine's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ultramarine's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section">关于</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section">标签</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section">分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%A8%A1%E6%80%81%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86"><span class="nav-text">1. 多模态相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vlpvision-language-pre-training-model"><span class="nav-text">1.1 VLP(Vision Language
+Pre-training) model</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#vlp%E5%B8%B8%E7%94%A8loss"><span class="nav-text">VLP常用loss</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#vlp%E7%BD%91%E7%BB%9C%E7%89%B9%E5%BE%81%E8%9E%8D%E5%90%88"><span class="nav-text">VLP网络特征融合</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E6%A8%A1%E6%80%81%E5%B8%B8%E8%A7%81%E4%BB%BB%E5%8A%A1"><span class="nav-text">1.2 多模态常见任务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E8%AF%A6%E8%A7%A3"><span class="nav-text">2. 多模态论文详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vilt-%E8%A7%86%E8%A7%89%E6%96%87%E6%9C%AC%E5%A4%9A%E6%A8%A1%E6%80%81transformer"><span class="nav-text">2.1
+ViLT-视觉文本多模态Transformer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="nav-text">模型结构</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#albef"><span class="nav-text">2.2 ALBEF</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-1"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-1"><span class="nav-text">模型结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#momentum-distillation"><span class="nav-text">momentum distillation</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vlmo"><span class="nav-text">2.3 VLMo</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-2"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-2"><span class="nav-text">模型结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83-stagewise-pre-training-strategy"><span class="nav-text">模型训练-stagewise
+pre-training strategy</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#blip"><span class="nav-text">2.4 BLIP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-3"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-medmixture-of-encoder-and-decoder"><span class="nav-text">模型结构-MED：Mixture of
+Encoder and Decoder</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E6%A1%86%E6%9E%B6-capfilter-model"><span class="nav-text">训练框架-CapFilter model</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#coca"><span class="nav-text">2.5 Coca</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-3"><span class="nav-text">模型结构</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#beit-v3"><span class="nav-text">2.6 BEiT-v3</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#big-convergence"><span class="nav-text">Big Convergence</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-4"><span class="nav-text">模型结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%8B%E6%B8%B8%E4%BB%BB%E5%8A%A1transfer"><span class="nav-text">下游任务Transfer</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93"><span class="nav-text">3. 多模态模型总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ultramarine"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">Ultramarine</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2023/08/06/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="Ultramarine">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ultramarine's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="多模态论文梳理总结 | ultramarine's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          多模态论文梳理总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-08-06 22:11:45" itemprop="dateCreated datePublished" datetime="2023-08-06T22:11:45+08:00">2023-08-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%BA%E6%96%87%E8%AF%A6%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">论文详解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>多模态指的是多种模态的信息数据，包括：文本、图像、视频、音频等。多模态任务是指需要同时处理两种或多种不同类型的数据的任务。VIT（Vision
+Transformer）和CLIP（Contrastive Language–Image
+Pre-training）这两种基于Transformer模型的出现，极大地推动了多模态研究的发展。正是由于Transformer能够对不同模态的数据进行统一建模，包括参数共享和特征融合，这极大地降低了多模态任务的复杂性和计算成本，使其成为多模态模型的主流方法。</p>
+<span id="more"></span>
+<h3 id="多模态相关知识">1. 多模态相关知识</h3>
+<h4 id="vlpvision-language-pre-training-model">1.1 VLP(Vision Language
+Pre-training) model</h4>
+<h5 id="vlp常用loss">VLP常用loss</h5>
+<ul>
+<li>image-text contrast loss (ITC loss)：</li>
+<li>image text matching loss (ITM
+loss)：随机打乱图片文本对，判断打乱后的图片文本对和原始图片文本对，哪个是真的图片文本对。即二分类问题。</li>
+<li>masked language modeling loss (MLM
+loss)：重建masked的单词，即完形填空。</li>
+<li>word patch alignment loss (WPA loss)：利用optimal
+transport，计算文本输出和图像输出两个分布之间的Wasserstein
+metric距离。</li>
+</ul>
+<h5 id="vlp网络特征融合">VLP网络特征融合</h5>
+<ul>
+<li>single
+stream：把文本特征和图像特征contact为一个特征，然后在一个模型中学习</li>
+<li>two
+stream：文本特征在文本模型中学习，图像特征在图像模型中学习。两个单独模态的模型在同一个时间点上做融合。</li>
+</ul>
+<h4 id="多模态常见任务">1.2 多模态常见任务</h4>
+<ul>
+<li>图像描述（image captioning）
+：对给定图像生成描述性说明或生成字幕。</li>
+<li>视觉定位（visual
+grounding）：在给定的图像中定位具有指定描述的对象。</li>
+<li>视觉问答（VQA）：借助相关图像为文本问题生成文本答案。</li>
+<li>跨模态检索（Cross-Modal
+Retrieval）：包括利用文本搜索图像和利用图像搜索文本两种任务。</li>
+<li>视觉推理（visual
+reasoning）：对给定的图像图像推断常识信息和认知理解。可分为两个任务，包括问题回答（从问题的预期答案库中选择最佳答案）和回答理由（提供给定答案背后的理由）。</li>
+</ul>
+<h3 id="多模态论文详解">2. 多模态论文详解</h3>
+<h4 id="vilt-视觉文本多模态transformer">2.1
+ViLT-视觉文本多模态Transformer</h4>
+<p>论文：ViLT: Vision-and-Language Transformer Without Convolution or
+Region Supervision <a
+target="_blank" rel="noopener" href="https://proceedings.mlr.press/v139/kim21k.html">paper</a></p>
+<h5 id="基本思想">基本思想</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/VLiT-model%20compare.png"
+alt="VLiT-model compare" />
+<figcaption aria-hidden="true">VLiT-model compare</figcaption>
+</figure>
+<p>传统视觉文本多模态依赖图像特征的提取。VLP模型中，需要把图像的像素需要转换为一个离散，含有语义的特征，从而和文本的token对齐。为了加快模型运行速度，ViLT直接使用linear
+embedding得到图像的特征，而不利用backbone去抽取图像的region
+feature和deep convolutonal visual
+embedders，即将目标检测从多模态模型中移除，大大简化了多模态模型的复杂度。同时，ViLT利用数据增强提升VLP模型在下游任务的性能。</p>
+<h5 id="模型结构">模型结构</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/VLiT-framework.png"
+alt="VLiT-framework" />
+<figcaption aria-hidden="true">VLiT-framework</figcaption>
+</figure>
+<ul>
+<li>文本通过BERT tokenizer得到word
+embedding（L*H)；图像打成patch输入过一个linear projection，得到 image
+embedding(N*H)。</li>
+<li>modal-type embedding、token position embedding和word/image
+embedding相加作为一个整体，然后concat拼接起来得到Transformer
+Encoder输入（维度(N+L+2)*H，其中image embedding和word embedding
+开始位置各有一个cls token），即利用encoder做特征融合。</li>
+<li>利用Transformer第一个token的输出（1*H），经过一个pooler（H*H)，即权重矩阵，再通过一个FC得到二分类的ITM
+loss。计算文本输出和图像输出的分布距离，得到word patch alignment
+loss。对文本在计算masked language modeling
+loss，即通过输出重构被masked的单词。</li>
+</ul>
+<p>训练trick-数据增强：</p>
+<ul>
+<li>whole word masked：整个单词masked，而不是词切分后的token
+masked。更能利用图片信息。</li>
+<li>image augmentation：防止图像文本不匹配，不使用color
+inversion和cutout。</li>
+</ul>
+<h4 id="albef">2.2 ALBEF</h4>
+<p>论文：Align before Fuse: Vision and Language Representation Learning
+with Momentum Distillation <a
+target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper_files/paper/2021/hash/505259756244493872b7709a8a01b536-Abstract.html">paper</a></p>
+<h5 id="基本思想-1">基本思想</h5>
+<ul>
+<li>由于文本和图像token的不对齐，multimodal
+encoder学习图像文本之间的交互信息是很难的，所以利用ITC将图像和文本在fusion之前就align，使得文本和图像特征更接近。</li>
+<li>为了更好从noisy web data中学习，提出momentum
+distillation的方法。利用momentum
+model来生成pseudo-targets，来实现自训练。</li>
+<li>从信息最大化的较大来说，LML、ITM、momentum
+distillation等一系列训练任务（目标函数）都是为同一个图像文本对生成不同的视角，即可以看成一种变相的data
+augmentation。从而使模型具备semantic preservaing的能力。</li>
+</ul>
+<h5 id="模型结构-1">模型结构</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/VLMO-training.png"
+alt="ALBEF-framework" />
+<figcaption aria-hidden="true">ALBEF-framework</figcaption>
+</figure>
+<ul>
+<li>图像通过image encoder(ViT)，得到image
+embedding，文本先通过tokenizer之后，再通过text
+encoder（Bert的前6层），得到text embedding。</li>
+<li>将图像和文本的的cls embedding（768*1）作为全局特征，取出来做down
+sample和normalization得到（256*1)就得到一个正样本对，再和momentum
+model生成的负样本对对比学习计算ITC loss，从而达到align的效果。</li>
+<li>image embedding和text embedding 通过multimodal
+encoder（Bert模型的后6层）进行模态融合。之后分别计算ITM loss和MLM loss。
+<ul>
+<li>ITM loss：multimodal encoder得到的特征加一个FC层做二分类。由于ITM
+loss本身比较简单，所以采用hard
+negatives的限制，即通过计算图片和其所在batch的所有文本的cos
+similarity，选择除自己以外相似度最高的作为负样本，即最接近正样本的负样本。</li>
+<li>MLM loss：即原始text mask一些单词，把masked
+text和图片一起通过ALBEF模型，去预测被masked的单词，与Bert相比利用了图像信息。</li>
+</ul></li>
+<li>ALBEF模型每一个训练iteration有两个forward，ITC loss和ITM
+loss的输入是image和text；MLM loss的输入是image和masked text。</li>
+</ul>
+<h5 id="momentum-distillation">momentum distillation</h5>
+<p>对于ITC loss和MLM loss来说，one hot label的noisy
+data是不好的，因为有些负样本也包含了相关信息，所以利用self-training来生成额外的label。具体方法是先构建一个momentum
+model，然后利用momentum model来生成pseudo-targets，从而变为multi
+label。</p>
+<ul>
+<li>momentum model：在已有模型之上，做exponential moving
+average(EMA)。即训练过程中，原始model的预测不仅和GT的one
+label接近，而且和momentum
+model来生成pseudo-targets尽可能match，从而达到一个折中。</li>
+</ul>
+<h4 id="vlmo">2.3 VLMo</h4>
+<p>论文：VLMo: Unified Vision-Language Pre-Training with
+Mixture-of-Modality-Experts <a
+target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper_files/paper/2022/hash/d46662aa53e78a62afd980a29e0c37ed-Abstract-Conference.html">paper</a></p>
+<h5 id="基本思想-2">基本思想</h5>
+<ul>
+<li>Mixture-of-Modality-Experts：统一的框架，灵活选择使用Dual-encoder还是Fusion
+encoder。所有模态share
+self-attention权重，但是feed-forward层每个模态对应自己不同的expert。根据输入的模态数据，选择使用哪个模型结构。
+<ul>
+<li>Dual-encoder：类似于CLIP，可以提取图像和文本特征存储起来，然后跟测试数据计算余弦相似度，比较容易做检索的任务。但是在一些比较复杂的任务上效果不好，如VR。</li>
+<li>Fusion encoder：是先把图像和文本分别处理，再用transformer
+encoder做模态交互，在VR、VE、VQA效果比较好。但当去做检索任务且图像-文本对特别大时，只有一个模型要把所有的image-text
+pair同时去编码推理，计算相似度，推理很慢。</li>
+</ul></li>
+<li>stagewise pre-training strategy：分阶段预训练，vision
+expert在视觉数据集上先预训练好，然后text
+expert在文本数据集上先预训练好。这样vision expert和text
+expert模型都实现了很好的初始化，然后再在多模态的数据集上做pre-training。</li>
+</ul>
+<h5 id="模型结构-2">模型结构</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/ALBEF-framework.png"
+alt="VLMO-framework" />
+<figcaption aria-hidden="true">VLMO-framework</figcaption>
+</figure>
+<ul>
+<li>MoME Transformer：在Transformer
+Block中，对于不同模态的信息有各自的FFN，即Vision-FFN，Language-FFN，Vision-Language-FFN。同时在Multi-head
+Self-Attention中，各个模态之间是share weights的。</li>
+<li>Loss
+<ul>
+<li>ITC
+loss：Dual-encoder形式，图像文本分别通过两个model，即V-FFN和L-FFN。</li>
+<li>ITM/MLM loss：Fusion
+encoder形式，图像文本一起进入MSA，在前面的（L-F）层对图像和文本分别用V-FFN和L-FFN，最后F层利用VL-FFN。</li>
+</ul></li>
+</ul>
+<h5 id="模型训练-stagewise-pre-training-strategy">模型训练-stagewise
+pre-training strategy</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BLIP-framework.png"
+alt="VLMO-training" />
+<figcaption aria-hidden="true">VLMO-training</figcaption>
+</figure>
+<ol type="1">
+<li>预训练V-FFN时，利用BEIT 进行Mask image model的Unsupervised
+task，V-FFN和Multi-Head Self-Attention都打开训练。</li>
+<li>在预训练L-FFN时，进行Mask language model任务，frozen
+V-FFN和Multi-Head Self-attention。不需要fine-tune Multi-Head
+Self-Attention，效果就很好。但先language训练再在vision上frozen，结果相较差一些。</li>
+<li>VL-FFN预训练时，打开所有参数fine-tune，损失函数与ALBEF一样，也是ITC，ITM，MLM。</li>
+</ol>
+<h4 id="blip">2.4 BLIP</h4>
+<p>论文：BLIP: Bootstrapping Language-Image Pre-training for Unified
+Vision-Language Understanding and Generation <a
+target="_blank" rel="noopener" href="https://proceedings.mlr.press/v162/li22n.html">paper</a></p>
+<h5 id="基本思想-3">基本思想</h5>
+<ul>
+<li><p>模型角度：VLP模型可分为encoder-based模型（CLIP、ALBEF）和encoder-decoder模型（SimVLM）。</p>
+<ul>
+<li>encoder-based：只有编码器没有解码器，无法直接运用到text
+generation的任务里去</li>
+<li>encoder-decoder：可以做生成的任务，<strong>但是没有统一的框架</strong>，就不能用来做image
+text retrieval任务。</li>
+</ul>
+<p>借鉴VLMO想法，将模型设计的很灵活，从而构造一个统一的框架</p></li>
+<li><p>数据角度：使用这种噪音数据集去预训练还是不好的，不是最优解。为了有效去清洗数据集，让模型更好利用数据集的图像文本配对信息，BLIP提出了captioner和filter模型。captioner作用给定任意一张图片去生成文本，这样可以得到大量的合成数据。再去训练filter
+model将图像和文本不匹配的对从数据集删掉。</p></li>
+</ul>
+<h5
+id="模型结构-medmixture-of-encoder-and-decoder">模型结构-MED：Mixture of
+Encoder and Decoder</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BLIP-training.png"
+alt="BLIP-framework" />
+<figcaption aria-hidden="true">BLIP-framework</figcaption>
+</figure>
+<p>MED包含4个模型，一个image encoder和3个text encoder，同时3个text
+encoder之间共享参数。</p>
+<ul>
+<li>image encoder：即完整的VIT模型，</li>
+<li>text encoder：N层Transformer。输入为CLS
+token+texttoken，输出的文本特征和视觉特征计算ITC
+loss，即做理解分类的任务。在计算ITC时，也利用momentum
+model，做知识蒸馏和数据的清理。</li>
+<li>image-grounded text
+encoder：一个多模态encoder，借助了图像的信息去完成多模态任务，计算ITM
+loss。输入为encoder token+text
+token，通过self-attention，然后和图像特征做cross
+attention，再通过FFN得到多模态特征。在计算ITM时，利用ITC得到的similarity
+score，做hard negative mining。</li>
+<li>image-grounded text
+decoder：一个多模态decoder，通过前面文本推测后面文本，计算ML
+loss（给定一些词预测后面被mask的词）。输入为encoder
+token+masked后半部分的text
+token，通过causal-attention，然后和图像特征做cross
+attention，再通过FFN得到多模态特征。</li>
+</ul>
+<h5 id="训练框架-capfilter-model">训练框架-CapFilter model</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/VLMO-framework.png"
+alt="BLIP-training" />
+<figcaption aria-hidden="true">BLIP-training</figcaption>
+</figure>
+<p>通过CapFilter model模型，可以做到数据集的bootstrapping</p>
+<ul>
+<li>Filter：将预先训练好的MED模型中，图像和两个文本encoder模型在干净数据集上去做ITC和ITM的微调，微调过后的MED即为Filter。用这个模型去算图像文本相似度，从而可以过滤，将原始噪音文本对变成稍微干净的图像文本对。</li>
+<li>Captioner：由于MED训练好的decoder非常强，生成的句子比原始的图像文本对要好很多，所以用新生成的图像文本对去充当新的训练数据集。image-grounded
+text decoder经过LM微调即为captioner。</li>
+</ul>
+<h4 id="coca">2.5 Coca</h4>
+<p>论文：CoCa: Contrastive Captioners are Image-Text Foundation Models
+<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2205.01917">paper</a></p>
+<h5 id="模型结构-3">模型结构</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BEITv3-framework.png"
+alt="Coca-framework" />
+<figcaption aria-hidden="true">Coca-framework</figcaption>
+</figure>
+<ul>
+<li>图像通过image encoder得到图像特征，文本通过text
+decoder得到文本特征，图像的cls token和文本cls token计算ITC loss。</li>
+<li>图像特征（除cls token）经过attentional pooling，输入multimodal text
+decoder中和文本特征做cross attention，计算captioning loss，即ML
+loss。</li>
+</ul>
+<p>由于文本一开始就是masked，所以CoCa一个iteration只forward一次，训练时间大大减少。</p>
+<h4 id="beit-v3">2.6 BEiT-v3</h4>
+<p>论文：Image as a Foreign Language: BEiT Pretraining for All Vision
+and Vision-Language Tasks <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2208.10442">paper</a></p>
+<h5 id="big-convergence">Big Convergence</h5>
+<ul>
+<li>模型：Transformer模型是基础。现有模型在遇到不同的下游任务需要对模型做改进。利用multi-way
+transformer来实现不同任务的统一模型。
+<ul>
+<li>dual-encoder：CLIP，适合做快速retrieval。</li>
+<li>encoder-decoder：BLIP、CoCa，可以做生成任务。</li>
+<li>fusion-encoder：只有encoder，但有多模态融合，如ALBEF、VLMo。可以做image-text
+encoding。</li>
+</ul></li>
+<li>目标函数：masked data
+modeling。只使用一个目标函数，一方面训练更加高效，另一方面便于优化和调参。文本和图像都作为sequence
+token，可以用相同的方法处理。</li>
+<li>模型参数和数据集的scale
+up：只有足够大的参数和数据，才能提高模型的通用能力，从而Transfer到不同的下游任务。</li>
+</ul>
+<h5 id="模型结构-4">模型结构</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Coca-framework.png"
+alt="BEITv3-framework" />
+<figcaption aria-hidden="true">BEITv3-framework</figcaption>
+</figure>
+<p>BEiT-v3由multi-way transformer组成，其中multi-way
+transformer就是MOME，即一个shared weightd的Multi-Head
+Self-attention，和不同模态的FFN(V-FFN，L-FFN，VL-FFN)。同时，任意模态输入网络后，都表现为
+list of tokens，直接将它们看做是相同的模态来做masked data modeling
+就好。</p>
+<h5 id="下游任务transfer">下游任务Transfer</h5>
+<p><img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BEITv3-transfer.png" alt="VLM-review" style="zoom:80%;" /></p>
+<p>做下游任务的话，直接将需要的那部分模型拿出来即可。不仅能做任意任务，还继承了前作的优点，比如
+CLIP 这种弱跨模态交互带来的计算效率的优势。</p>
+<ul>
+<li>Vision
+Encoder：可以做各种视觉任务，如classification、segmentation、objec
+detection。</li>
+<li>Language Encoder：可以做各种语言任务。</li>
+<li>多模态任务
+<ul>
+<li>fusion encoder：适合做vision language understanding task。</li>
+<li>dual encoder：即分开做视觉部分和语言部分，用ITC fine
+tune。适合image-text retrieval。</li>
+<li>image-to-text generation：文本masked，用image grounded text
+encoder去预测被masked的词。适合做生成任务。</li>
+</ul></li>
+</ul>
+<h3 id="多模态模型总结">3. 多模态模型总结</h3>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/VLM-review.png"
+alt="VLM-review" />
+<figcaption aria-hidden="true">VLM-review</figcaption>
+</figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/" rel="tag"># 多模态</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/18/linux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1/" rel="prev" title="linux内核模块设计">
+                  <i class="fa fa-angle-left"></i> linux内核模块设计
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ultramarine</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
