@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BEITv3-transfer.png">
 <meta property="article:published_time" content="2023-08-06T14:11:45.000Z">
-<meta property="article:modified_time" content="2023-11-07T01:49:49.521Z">
+<meta property="article:modified_time" content="2023-11-07T15:02:00.748Z">
 <meta property="article:author" content="Ultramarine">
 <meta property="article:tag" content="多模态">
 <meta name="twitter:card" content="summary">
@@ -320,7 +320,7 @@ augmentation。从而使模型具备semantic preservaing的能力。</li>
 <h5 id="模型结构-1">模型结构</h5>
 <figure>
 <img
-src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/VLMO-training.png"
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/ALBEF-framework.png"
 alt="ALBEF-framework" />
 <figcaption aria-hidden="true">ALBEF-framework</figcaption>
 </figure>
@@ -378,7 +378,7 @@ expert模型都实现了很好的初始化，然后再在多模态的数据集�
 <h5 id="模型结构-2">模型结构</h5>
 <figure>
 <img
-src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/ALBEF-framework.png"
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/VLMO-framework.png"
 alt="VLMO-framework" />
 <figcaption aria-hidden="true">VLMO-framework</figcaption>
 </figure>
@@ -398,7 +398,7 @@ encoder形式，图像文本一起进入MSA，在前面的（L-F）层对图像�
 pre-training strategy</h5>
 <figure>
 <img
-src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BLIP-framework.png"
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/VLMO-training.png"
 alt="VLMO-training" />
 <figcaption aria-hidden="true">VLMO-training</figcaption>
 </figure>
@@ -432,7 +432,7 @@ id="模型结构-medmixture-of-encoder-and-decoder">模型结构-MED：Mixture o
 Encoder and Decoder</h5>
 <figure>
 <img
-src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BLIP-training.png"
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BLIP-framework.png"
 alt="BLIP-framework" />
 <figcaption aria-hidden="true">BLIP-framework</figcaption>
 </figure>
@@ -460,7 +460,7 @@ attention，再通过FFN得到多模态特征。</li>
 <h5 id="训练框架-capfilter-model">训练框架-CapFilter model</h5>
 <figure>
 <img
-src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/VLMO-framework.png"
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BLIP-training.png"
 alt="BLIP-training" />
 <figcaption aria-hidden="true">BLIP-training</figcaption>
 </figure>
@@ -476,7 +476,7 @@ text decoder经过LM微调即为captioner。</li>
 <h5 id="模型结构-3">模型结构</h5>
 <figure>
 <img
-src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BEITv3-framework.png"
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Coca-framework.png"
 alt="Coca-framework" />
 <figcaption aria-hidden="true">Coca-framework</figcaption>
 </figure>
@@ -511,7 +511,7 @@ up：只有足够大的参数和数据，才能提高模型的通用能力，从
 <h5 id="模型结构-4">模型结构</h5>
 <figure>
 <img
-src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Coca-framework.png"
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BEITv3-framework.png"
 alt="BEITv3-framework" />
 <figcaption aria-hidden="true">BEITv3-framework</figcaption>
 </figure>
@@ -521,7 +521,7 @@ Self-attention，和不同模态的FFN(V-FFN，L-FFN，VL-FFN)。同时，任意
 list of tokens，直接将它们看做是相同的模态来做masked data modeling
 就好。</p>
 <h5 id="下游任务transfer">下游任务Transfer</h5>
-<p><img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BEITv3-transfer.png" alt="VLM-review" style="zoom:80%;" /></p>
+<p><img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/BEITv3-transfer.png" alt="BEITv3-transfer" style="zoom:80%;" /></p>
 <p>做下游任务的话，直接将需要的那部分模型拿出来即可。不仅能做任意任务，还继承了前作的优点，比如
 CLIP 这种弱跨模态交互带来的计算效率的优势。</p>
 <ul>
