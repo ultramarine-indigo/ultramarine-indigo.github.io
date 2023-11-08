@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ultramarine-indigo.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.18.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="CLIP（Contrastive Language-Image Pre-training）是由OpenAI开发的深度学习模型，用于将文本和图像之间的关系建模。该模型通过对比学习原理，将相关的文本和图像嵌入到相邻点，而将不相关的文本和图像嵌入到远离点，从而实现对图像和文本的理解。CLIP适用于多种任务，具有良好的可解释性，广泛用于图像搜索、图像标注、虚拟现实等领域。它代表了深度学习领域中在文本和图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CLIP及其改进工作总结">
+<meta property="og:url" content="http://ultramarine-indigo.github.io/2023/07/08/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="ultramarine&#39;s Blog">
+<meta property="og:description" content="CLIP（Contrastive Language-Image Pre-training）是由OpenAI开发的深度学习模型，用于将文本和图像之间的关系建模。该模型通过对比学习原理，将相关的文本和图像嵌入到相邻点，而将不相关的文本和图像嵌入到远离点，从而实现对图像和文本的理解。CLIP适用于多种任务，具有良好的可解释性，广泛用于图像搜索、图像标注、虚拟现实等领域。它代表了深度学习领域中在文本和图">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-08T03:35:56.000Z">
+<meta property="article:modified_time" content="2023-11-08T04:19:19.795Z">
+<meta property="article:author" content="Ultramarine">
+<meta property="article:tag" content="多模态">
+<meta property="article:tag" content="CLIP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://ultramarine-indigo.github.io/2023/07/08/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2023/07/08/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/","path":"2023/07/08/CLIP及其改进工作总结/","title":"CLIP及其改进工作总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CLIP及其改进工作总结 | ultramarine's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ultramarine's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section">关于</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section">标签</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section">分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#clip-%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E8%BF%81%E7%A7%BB%E6%A8%A1%E5%9E%8B"><span class="nav-text">1. CLIP-文本图像迁移模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clip-%E7%9B%B8%E5%85%B3%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C"><span class="nav-text">CLIP 相关改进工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lseg%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E6%9C%89%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="nav-text">1.LSeg：图像分割+有监督学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#group-vit%E5%9F%BA%E4%BA%8E%E8%81%9A%E7%B1%BB%E7%9A%84%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2zero-shot"><span class="nav-text">2. Group
+ViT：基于聚类的图像分割+zero shot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clip4clip%E8%A7%86%E9%A2%91%E4%B8%ADvideo-text-retrieval"><span class="nav-text">3.
+CLIP4Clip：视频中video-text retrieval</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#actionclip%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3-%E5%8A%A8%E4%BD%9C%E8%AF%86%E5%88%AB"><span class="nav-text">ActionCLIP：视频理解-动作识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#audioclip%E8%AF%AD%E9%9F%B3%E9%A2%86%E5%9F%9F"><span class="nav-text">AudioCLIP：语音领域</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clip%E6%A8%A1%E5%9E%8B%E6%94%B9%E8%BF%9B%E6%80%BB%E7%BB%93"><span class="nav-text">CLIP模型改进总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ultramarine"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">Ultramarine</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2023/07/08/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="Ultramarine">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ultramarine's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CLIP及其改进工作总结 | ultramarine's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CLIP及其改进工作总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-08 11:35:56" itemprop="dateCreated datePublished" datetime="2023-07-08T11:35:56+08:00">2023-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%BA%E6%96%87%E8%AF%A6%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">论文详解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>CLIP（Contrastive Language-Image
+Pre-training）是由OpenAI开发的深度学习模型，用于将文本和图像之间的关系建模。该模型通过对比学习原理，将相关的文本和图像嵌入到相邻点，而将不相关的文本和图像嵌入到远离点，从而实现对图像和文本的理解。CLIP适用于多种任务，具有良好的可解释性，广泛用于图像搜索、图像标注、虚拟现实等领域。它代表了深度学习领域中在文本和图像之间建立联系的一项重要进展。</p>
+<span id="more"></span>
+<h2 id="clip-文本图像迁移模型">1. CLIP-文本图像迁移模型</h2>
+<p>论文：Learning Transferable Visual Models From Natural Language
+Supervision <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2103.00020">paper</a></p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/CLIP-framework.png"
+alt="CLIP-framework" />
+<figcaption aria-hidden="true">CLIP-framework</figcaption>
+</figure>
+<p>总结方法：通过在大量图片-文本对（其中原始配对的为正样本，不配对为负样本）数据集上进行对比训练（即计算ITC
+loss），从而利用文本作为图片的监督标签，来帮助模型获得更好的图片识别能力。同时，在相关数据集测试时，通过构造prompt
+template
+的形式，来计算图片和给定若干prompt文本的相似度来判断图片的具体类别。说明模型摆脱了category
+label的限制，具有很好的泛化性。</p>
+<p>数据利用率：数据增强、self-supervised（自监督）、self-training</p>
+<p>模型迁移：</p>
+<ul>
+<li>linear
+probe：在适配下游任务时，冻住预训练模型，只用其来抽特征，对其参数不进行更新，只对模型最后一层的线性层进行参数更新。</li>
+<li>fine-tuning：在适配下游任务时，对整个预训练模型全部进行参数更新，或者只对后面一部分模型进行更新，因为模型前几层一般提取的都是比较公共的特征，保留的底层信息较多，可以不用进行微调。</li>
+</ul>
+<p>对比学习：</p>
+<ul>
+<li>non-linear projection：在图片单模态模型中效果很好。SimCLR、MOCO</li>
+<li>linear projection：多模态中二者差异不大。CLIP</li>
+</ul>
+<p>Mixed-precision（混精度训练）：能够减少内存，加快训练速度，甚至可能提高模型性能。具体来说，在模型训练过程中不同的层Layer采用不同的数据精度进行训练，
+最终使得训练过程中的资源消耗(GPU显存，GPU 算力)降低，
+同时保证训练可收敛，模型精度与高精度FP32的结果接近。</p>
+<p>训练中节省内存的trick：</p>
+<ul>
+<li>gradient checkpointing</li>
+<li>half-precision Adam statistics</li>
+<li>half-precision stochastically rounded text encoder weight</li>
+</ul>
+<h2 id="clip-相关改进工作">CLIP 相关改进工作</h2>
+<h3 id="lseg图像分割有监督学习">1.LSeg：图像分割+有监督学习</h3>
+<p>论文：Language-driven Semantic Segmentation <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2201.03546">paper</a></p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/LSeg-framework.png"
+alt="LSeg-framework" />
+<figcaption aria-hidden="true">LSeg-framework</figcaption>
+</figure>
+<p>image encoder提取出图像的视觉特征(H*W*C；C为特征维度)，text
+encoder提取出语义标签的文本特征(N*C，N为语义分割的标签个数)，二者相乘得到融合后的特征(H*W*N)，然后和ground
+truth 计算cross entropy
+loss，即做有标签的监督学习。由于数据集较小，所以不进行fine tuning。</p>
+<h3 id="group-vit基于聚类的图像分割zero-shot">2. Group
+ViT：基于聚类的图像分割+zero shot</h3>
+<p>论文：GroupViT: Semantic Segmentation Emerges From Text Supervision
+<a
+target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2022/html/Xu_GroupViT_Semantic_Segmentation_Emerges_From_Text_Supervision_CVPR_2022_paper.html">paper</a></p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/GroupViT-framework.png"
+alt="GroupViT-framework" />
+<figcaption aria-hidden="true">GroupViT-framework</figcaption>
+</figure>
+<ul>
+<li>模型结构：图片得到的patch embedding拼接上group
+tokens（64*C），输入transformer layers中。之后利用grouping
+block将patching embeddingassign到64个group
+token中，即聚类的分配，得到segment
+token(64*C)。在此基础上再拼接8个新的group
+token，和上述过程一样，通过transformer layers和grouping block将segment
+token映射到8个大的聚类中心。之后将8个聚类中心依次通过transformer
+layers，avg pooling和MLP得到整个图片image level特征（1*C）</li>
+<li>训练：将模型输出的image level特征和text
+encoder得到的文本特征计算contrastive loss，进行对比学习。</li>
+<li>zero-shot推理：GroupViT模型得到图片的8个group
+embedding和语义标签prompt经过text
+encoder得到的文本特征计算相似度，从而判断每个group
+embedding对应的class。</li>
+</ul>
+<p>group token：类似CLS token，即用group
+token代表整个图片。初始值64，即开始有64个聚类中心，将图像中相似的像素点都归结到64个cluster中。</p>
+<p>limitation &amp; future work</p>
+<ul>
+<li><p>GroupViT更偏向于一个编码器，没有利用dense prediction的特性。</p>
+<p>利用dilated convolution、pyramid
+pooling、U-net等结构获得更多上下文的信息，和多尺度的信息。</p></li>
+<li><p>对于背景类的干扰。</p>
+<p>如何设置前景类的阈值；修改zero-shot的推理过程；训练时加入约束，将背景类的概念融入训练。</p></li>
+</ul>
+<h3 id="clip4clip视频中video-text-retrieval">3.
+CLIP4Clip：视频中video-text retrieval</h3>
+<p>论文：CLIP4Clip: An empirical study of CLIP for end to end video clip
+retrieval and captioning <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2104.08860">paper</a></p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/CLIP4Clip-framework.png"
+alt="CLIP4Clip-framework" />
+<figcaption aria-hidden="true">CLIP4Clip-framework</figcaption>
+</figure>
+<p>文本输入一个text encoder（Transformer），得到一个cls
+token，即整个句子的特征表示。视频每一帧图片都打成patch，然后输入一个video
+encoder（ViT），得到一系列的cls
+token，即每一帧图片的整体特征。然后对文本特征和一系列图像特征做相似度计算。主要有以下三个方法：</p>
+<ul>
+<li><p>parameter-free
+type：将一系列帧的特征做平均得到一个图像特征，然后直接和文本特征点乘计算相似度。</p>
+<p>简单，常用；但没有考虑时序信息。</p></li>
+<li><p>sequential type（late
+fusion）：利用LSTM或者Transformer对视频帧特征进行时序建模，再和文本特征点乘计算相似度。</p>
+<ul>
+<li>一系列帧的特征作为LSTM输入，直接取最后输出作为融合后的视频特征</li>
+<li>Transformer在一系列图像特征加上position
+embedding计算attention得到视频特征。</li>
+</ul></li>
+<li><p>tight type（early
+fusion）：文本特征放在图像帧特征前面，作为一个序列一起加上position
+embedding，输入一个Transformer中进行文本和视频帧的融合学习。其中文本特征作为position
+0，类似于cls token。将文本特征的输出通过一个MLP得到一个相似度。</p></li>
+</ul>
+<p>实验结果：</p>
+<ol type="1">
+<li>在数据量不大的下游任务，不需要微调CLIP模型。</li>
+<li>简单取平均的效果通常很好。tight
+type反而效果最不好，可能是数据集太少的原因。</li>
+</ol>
+<p>insight：</p>
+<ol type="1">
+<li>图像特征也是可以提升视频任务</li>
+<li>如果用视频方面的数据集再做一些post-pretrain训练，效果会更好。</li>
+<li>3Dpatch linear projection效果更好，本身考虑了时序信息。</li>
+<li>CLIP模型在做下游任务fine
+tuning时，学习率非常敏感，是最重要的超参数。最好做一下gradient
+search。</li>
+</ol>
+<h3 id="actionclip视频理解-动作识别">ActionCLIP：视频理解-动作识别</h3>
+<p>论文：ActionCLIP: A New Paradigm for Video Action Recognition <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2109.08472">paper</a></p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/ActionCLIP-framework.png"
+alt="ActionCLIP-framework" />
+<figcaption aria-hidden="true">ActionCLIP-framework</figcaption>
+</figure>
+<p>整体流程：视频通过video encoder得到视频的特征，标签通过text
+encoder得到文本特征。计算视频和文本之间的相似度，利用相似度矩阵和提前定义好的ground
+truth计算loss。由于不是标签one-hot的，所以计算KL 距离作为loss。</p>
+<ul>
+<li>文本：先经过一个textual prompt，在输入text encoder计算文本特征。
+<ul>
+<li>textual prompt：prefix prom、cloze prompt、suffix promptimage
+prompt。即加入前缀，后缀将标签拓展为一句话。</li>
+</ul></li>
+<li>图像：图片打成patch后，做linear projection得到的patch
+embedding加上spatial pos embedding作为输入。依次通过pre-network
+prompt、in-network prompt和post-network prompt，后两个即为video
+encoder。
+<ul>
+<li>pre-network prompt：joint，temporal position
+embedding+input。即时间和空间的token放在一起扔给网络学习。</li>
+<li>in-network prompt：Shift。在ViT layer之间加入temporal shift
+module，增强模型时序建模的能力。</li>
+<li>post-network prompt：mean pooling、1D conv/LSTM、temporal
+Transformer。将一系列图像帧特征融合为一个视频的特征。</li>
+</ul></li>
+</ul>
+<p>实验结果：in-network中的shift并没有起到很好的效果。再post-network中Transformer效果更好，因为动作识别的数据集相对较大。</p>
+<h3 id="audioclip语音领域">AudioCLIP：语音领域</h3>
+<p>论文：Audioclip: Extending Clip to Image, Text and Audio <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2106.13043">paper</a></p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Audioclip-framework.png"
+alt="Audioclip-framework" />
+<figcaption aria-hidden="true">Audioclip-framework</figcaption>
+</figure>
+<p>模型结构：在原有视频和文本的基础上，加入audio模块。语音的频谱输入audio
+encoder（ESResNeXt）中得到语音特征。用视频、文本、语音三个特征两两做正负样本对的对比学习，计算相似度矩阵，最后将三个相似度矩阵的目标函数相加，一起更新模型的参数。</p>
+<h2 id="clip模型改进总结">CLIP模型改进总结：</h2>
+<ol type="1">
+<li>小改：图像和文本通过CLIP得到特征，将得到的特征和原来的特征做融合（点乘、拼接等），之前的训练框架保持不动，参数不更新，只是用一个更好的特征取加强模型的训练。</li>
+<li>中改：可以把CLIP看成一个teacher，将CLIP得到的特征做蒸馏，即蒸馏预训练好的知识，帮助现有模型收敛更快。</li>
+<li>大改：借鉴CLIP多模态对比学习的思想，自定义对比学习的正、副样本对，计算对比学习的loss。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/" rel="tag"># 多模态</a>
+              <a href="/tags/CLIP/" rel="tag"># CLIP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/18/linux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1/" rel="prev" title="linux内核模块设计">
+                  <i class="fa fa-angle-left"></i> linux内核模块设计
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/08/06/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93/" rel="next" title="多模态论文梳理总结">
+                  多模态论文梳理总结 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ultramarine</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
