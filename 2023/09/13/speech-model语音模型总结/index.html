@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/CPC framework.png">
 <meta property="article:published_time" content="2023-09-13T03:01:48.000Z">
-<meta property="article:modified_time" content="2023-11-30T10:45:40.400Z">
+<meta property="article:modified_time" content="2023-11-30T10:51:04.777Z">
 <meta property="article:author" content="Ultramarine">
 <meta property="article:tag" content="多模态">
 <meta property="article:tag" content="speech model">
@@ -118,9 +118,8 @@
         <div class="post-toc-wrap sidebar-panel">
             <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#speech-ssl-model-%E8%87%AA%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B"><span class="nav-text">speech SSL model
 自监督学习模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#contrastive-models-%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B"><span class="nav-text">1. Contrastive Models
-对比学习模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cpc"><span class="nav-text">1.1 CPC</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="nav-text">模型结构</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wav2vec-2.0"><span class="nav-text">1.2 wav2vec 2.0</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-1"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-1"><span class="nav-text">模型结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#predictive-models-%E9%A2%84%E6%B5%8B%E6%A8%A1%E5%9E%8B"><span class="nav-text">2. Predictive models 预测模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#hubert"><span class="nav-text">2.1 HuBERT</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-2"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-2"><span class="nav-text">模型结构</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wavlm"><span class="nav-text">2.2 WavLM</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-3"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-3"><span class="nav-text">模型结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#speech-ssl-model-%E5%B0%8F%E7%BB%93"><span class="nav-text">3. speech SSL model 小结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#contrastive-models-%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B-1"><span class="nav-text">Contrastive Models
-对比学习模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#predictive-models-%E9%A2%84%E6%B5%8B%E6%A8%A1%E5%9E%8B-1"><span class="nav-text">Predictive models 预测模型</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#audio-text-multimodal-model-%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A8%A1%E5%9E%8B"><span class="nav-text">audio-text multimodal
-model 多模态模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#clap"><span class="nav-text">1. CLAP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-4"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-4"><span class="nav-text">模型结构</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flap"><span class="nav-text">2. FLAP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-5"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-5"><span class="nav-text">模型结构</span></a></li></ol></li></ol></li></ol></li></ol></div>
+对比学习模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cpc"><span class="nav-text">1.1 CPC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wav2vec-2.0"><span class="nav-text">1.2 wav2vec 2.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#predictive-models-%E9%A2%84%E6%B5%8B%E6%A8%A1%E5%9E%8B"><span class="nav-text">2. Predictive models 预测模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#hubert"><span class="nav-text">2.1 HuBERT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wavlm"><span class="nav-text">2.2 WavLM</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#speech-ssl-model-%E5%B0%8F%E7%BB%93"><span class="nav-text">3. speech SSL model 小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#audio-text-multimodal-model-%E8%AF%AD%E9%9F%B3-%E6%96%87%E6%9C%AC%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A8%A1%E5%9E%8B"><span class="nav-text">audio-text
+multimodal model 语音-文本多模态模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#clap"><span class="nav-text">1. CLAP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flap"><span class="nav-text">2. FLAP</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -243,9 +242,9 @@ pair）的图片，把它们输入model，对于输出的特征向量，我们�
 <h4 id="cpc">1.1 CPC</h4>
 <p>论文：Representation Learning with Contrastive Predictive Coding <a
 target="_blank" rel="noopener" href="https://arxiv.org/abs/1807.03748">paper</a></p>
-<h5 id="基本思想">基本思想</h5>
+<p><strong>基本思想</strong></p>
 <p>学习表示，以编码（高维）信号不同部分之间的基础共享信息。同时，它舍弃了更本地的低级信息和噪音。在时间序列和高维建模中，使用下一步预测的方法利用了信号的局部平滑性。当预测更远的未来时，共享信息的数量变得更低，模型需要推断更全局的结构。这些跨越许多时间步的“慢特征”通常更有趣（例如语音中的音素和语调、图像中的对象或书中的故事情节）</p>
-<h5 id="模型结构">模型结构</h5>
+<p><strong>模型结构</strong></p>
 <p><img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/CPC framework.png" alt="CPC framework" style="zoom:67%;" /></p>
 <ul>
 <li>语言降采样：对于一段语音信号，采样率16000Hz。通过5层卷积CNN，每层的步长为5，4，2，2，2，通过这五层，相当于信号被采样了5×4×2×2×2=160。所以最后输出的信号为每秒16000/160=100点。</li>
@@ -259,7 +258,7 @@ target="_blank" rel="noopener" href="https://arxiv.org/abs/1807.03748">paper</a>
 <p>论文：wav2vec 2.0: A Framework for Self-Supervised Learning of Speech
 Representations <a
 target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper/2020/hash/92d1e1eb1cd6f9fba3227870bb6d7f07-Abstract.html">paper</a></p>
-<h5 id="基本思想-1">基本思想</h5>
+<p><strong>基本思想</strong></p>
 <p>原始音频数据通过多层卷积神经网络编码得到隐变量，隐变量一方面通过Gumbel
 softmax量化模块映射为量化隐变量
 ，另一方面被随机mask一些位置之后输入给Transformers网络得到上下文特征向量。模型在连续语音表示上构建上下文表示，自注意力端到端捕获整个潜在表示序列的依赖关系。</p>
@@ -272,7 +271,7 @@ representation)。</p>
 <p>在对未标记语音进行预训练后，对模型在有标签的数据上利用Connectionist
 Temporal Classification (CTC)
 loss微调，最终可用到下游的语言识别任务。</p>
-<h5 id="模型结构-1">模型结构</h5>
+<p><strong>模型结构</strong></p>
 <figure>
 <img
 src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/wav2vec2.0-framework.png"
@@ -306,13 +305,13 @@ labeling。</p>
 <p>论文：HuBERT: Self-Supervised Speech Representation Learning by
 Masked Prediction of Hidden Units <a
 target="_blank" rel="noopener" href="https://arxiv.org/abs/2106.07447">paper</a></p>
-<h5 id="基本思想-2">基本思想</h5>
+<p><strong>基本思想</strong></p>
 <p>自监督的语音表示学习有三个难点：（1）语音中存在多个unit；（2）训练的时候和NLP不同，没有离散的单词或字符输入；（3）每个unit都有不同的长度，且没有相应的标注。</p>
 <p>HuBERT利用离线聚类步骤为类似 BERT
 的预测损失提供对齐的目标标签，然后再通过类似BERT的mask式loss让模型在连续的语音数据中学习到数据中的声学和语言模型。一个关键因素是仅在掩码区域上应用预测损失，这迫使模型在连续输入上学习组合的声学和语言模型。HuBERT
 主要依赖于无监督聚类步骤的一致性，而不是分配的集群标签的内在质量。</p>
 <p>具体而言，HuBERT模型输入masked的连续语音特征，以预测预定的集群分配。预测损失仅应用于masked的区域，迫使模型学习未masked的输入的高水平表示，以正确地推断masked的目标。从直觉上讲，HuBERT模型被迫从连续的输入中学习声学和语言模型。首先，该模型需要将未masked的输入建模为有意义的连续潜在表示，该代表映射到经典的声学建模问题。其次，为了减少预测错误，该模型需要捕获学习表示之间的远程时间关系。激发这项工作的一个关键见解是目标的一致性，而不仅仅是其正确性，这使模型能够专注于建模输入数据的顺序结构。</p>
-<h5 id="模型结构-2">模型结构</h5>
+<p><strong>模型结构</strong></p>
 <figure>
 <img
 src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/HuBERT-framework.png"
@@ -333,13 +332,13 @@ features上直接得到label，在学习进行到一定程度时在模型学习�
 <p>论文：WavLM: Large-Scale Self-Supervised Pre-Training for Full Stack
 Speech Processing <a
 target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.13900">paper</a></p>
-<h5 id="基本思想-3">基本思想</h5>
+<p><strong>基本思想</strong></p>
 <p>语音信号包含多方面的信息，包括说话者身份、副语言、口语内容等，因此为所有语音任务学习通用表示具有挑战性。为了解决这个问题，提出了一种新的预训练模型
 WavLM
 来解决全栈下游语音任务。WavLM在训练前联合学习掩蔽语音预测和去噪。通过这种方式，WavLM
 不仅通过掩码语言建模保持语音内容建模能力，而且还通过语音去噪提高了非 ASR
 任务的潜力。可以理解为，WavLM和HuBERT架构一样，数据一样，loss函数一样，但只引入了denosing，它的效果就比HuBERT要好。</p>
-<h5 id="模型结构-3">模型结构</h5>
+<p><strong>模型结构</strong></p>
 <figure>
 <img
 src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/WavLM-framework.png"
@@ -362,8 +361,7 @@ src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.git
 alt="speech SSL model" />
 <figcaption aria-hidden="true">speech SSL model</figcaption>
 </figure>
-<h5 id="contrastive-models-对比学习模型-1">Contrastive Models
-对比学习模型</h5>
+<p><strong>Contrastive Models 对比学习模型</strong></p>
 <ul>
 <li>CPC：利用对比学习思想，通过当前向量来预测之后的特征。</li>
 <li>wav2vec
@@ -371,7 +369,7 @@ alt="speech SSL model" />
 <li>XLS-R：框架基本和Wav2vec
 2.0一样。只是XLS-R是在超大的数据上训练的。包含400000小时，107种语言。</li>
 </ul>
-<h5 id="predictive-models-预测模型-1">Predictive models 预测模型</h5>
+<p><strong>Predictive models 预测模型</strong></p>
 <ul>
 <li>HuBERT：语音，提取MFCC特征，经过K-means得到码本作为伪标签。利用BERT的方式，即mask语音的一部分向量，最小化mask掉的那个的输出和聚类得到的码本标签之间的距离，从而训练模型。然后将得到Hubert反过来当成teacher
 model，用来继续训练这边的聚类模型，相互迭代。</li>
@@ -379,14 +377,14 @@ model，用来继续训练这边的聚类模型，相互迭代。</li>
 speech（比如是两个人讲话的语音），但做伪标签的语音还是用的干净语音。</li>
 <li>BEST-RQ：和WavLM相似，只不过其teacher聚类模型更简单，只进行随机初始化，在预训练过程中，它的Projection层和码本都不做更新。还有值得注意一点，它的输入是梅尔谱图。</li>
 </ul>
-<h2 id="audio-text-multimodal-model-多模态模型">audio-text multimodal
-model 多模态模型</h2>
+<h2 id="audio-text-multimodal-model-语音-文本多模态模型">audio-text
+multimodal model 语音-文本多模态模型</h2>
 <h4 id="clap">1. CLAP</h4>
 <p>论文：CLAP : LEARNING AUDIO CONCEPTS FROM NATURAL LANGUAGE
 SUPERVISION <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2206.04769">paper</a></p>
-<h5 id="基本思想-4">基本思想</h5>
+<p><strong>基本思想</strong></p>
 <p>通过在大量音频-文本对（其中原始配对的为正样本，不配对为负样本）数据集上进行对比训练，从而利用文本作为音频的监督标签，来帮助模型获得更好的音频识别能力。同时，在分类任务时，来计算音频和类标签文本的相似度来分类。消除了使用类标签进行训练的需要，在推理时实现了灵活的类预测，并可以推广到多个下游任务。</p>
-<h5 id="模型结构-4">模型结构</h5>
+<p><strong>模型结构</strong></p>
 <figure>
 <img
 src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/CLAP-framework.png"
@@ -403,14 +401,14 @@ logits 转换为概率分布。</li>
 <h4 id="flap">2. FLAP</h4>
 <p>论文：FLAP: FAST LANGUAGE-AUDIO PRE-TRAINING <a
 target="_blank" rel="noopener" href="https://arxiv.org/abs/2311.01615">paper</a></p>
-<h5 id="基本思想-5">基本思想</h5>
+<p><strong>基本思想</strong></p>
 <p>通过掩蔽、对比学习和重建有效地学习对齐的音频和视觉表示。为了提高效率，FLAP
 随机丢弃音频频谱图标记，仅关注剩余的用于自我监督的标记。通过多模态对比学习，FLAP
 学习在共享潜在空间中对齐成对的音频和文本表示。值得注意的是，FLAP
 通过掩码来利用多个增强视图进行模态间对比，并学习重建音频标记的掩码部分。此外，FLAP
 利用大型语言模型 (LLM)
 来增强文本输入，从而提高性能。这些方法导致更健壮和信息丰富的音频文本表示。</p>
-<h5 id="模型结构-5">模型结构</h5>
+<p><strong>模型结构</strong></p>
 <figure>
 <img
 src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/FLAP-framework.png"
