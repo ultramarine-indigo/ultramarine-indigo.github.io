@@ -26,18 +26,19 @@
 <meta property="og:site_name" content="ultramarine&#39;s Blog">
 <meta property="og:description" content="语音表示学习就是将一段语音喂给自监督学习模型（SSL model），去抽一些好用的特征表示representation，这些特征再喂给Downstream models，就可以做语音识别或说话人识别等下游任务。本文将详细介绍应用于语音表示学习的一系列语音自监督模型和语音-文本多模态模型。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ultramarine-indigo.github.io/2023/09/13/imgs/speech%20model%20list.png">
 <meta property="og:image" content="http://ultramarine-indigo.github.io/2023/09/13/imgs/wav2vec2.0-framework.png">
 <meta property="og:image" content="http://ultramarine-indigo.github.io/2023/09/13/imgs/HuBERT-framework.png">
 <meta property="og:image" content="http://ultramarine-indigo.github.io/2023/09/13/imgs/WavLM-framework.png">
 <meta property="og:image" content="http://ultramarine-indigo.github.io/2023/09/13/imgs/CLAP-framework.png">
 <meta property="og:image" content="http://ultramarine-indigo.github.io/2023/09/13/imgs/FLAP-framework.png">
 <meta property="article:published_time" content="2023-09-13T03:01:48.000Z">
-<meta property="article:modified_time" content="2023-11-30T08:49:39.370Z">
+<meta property="article:modified_time" content="2023-11-30T09:04:54.356Z">
 <meta property="article:author" content="Ultramarine">
 <meta property="article:tag" content="多模态">
 <meta property="article:tag" content="speech model">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ultramarine-indigo.github.io/2023/09/13/imgs/wav2vec2.0-framework.png">
+<meta name="twitter:image" content="http://ultramarine-indigo.github.io/2023/09/13/imgs/speech%20model%20list.png">
 
 
 <link rel="canonical" href="http://ultramarine-indigo.github.io/2023/09/13/%E8%AF%AD%E9%9F%B3%E6%A8%A1%E5%9E%8B-speech-model-%E6%80%BB%E7%BB%93/">
@@ -230,6 +231,11 @@ models，就可以做语音识别或说话人识别等下游任务。本文将�
 <span id="more"></span>
 <h2 id="speech-ssl-model-自监督学习模型">speech SSL model
 自监督学习模型</h2>
+<p>speech SSL model发展总览</p>
+<figure>
+<img src="../imgs/speech%20model%20list.png" alt="speech model list" />
+<figcaption aria-hidden="true">speech model list</figcaption>
+</figure>
 <h3 id="wav2vec-2.0">1. wav2vec 2.0</h3>
 <p>论文：wav2vec 2.0: A Framework for Self-Supervised Learning of Speech
 Representations <a
