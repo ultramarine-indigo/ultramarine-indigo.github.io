@@ -22,12 +22,12 @@
     <meta name="description" content="CLIP（Contrastive Language-Image Pre-training）是由OpenAI开发的深度学习模型，用于将文本和图像之间的关系建模。该模型通过对比学习原理，将相关的文本和图像嵌入到相邻点，而将不相关的文本和图像嵌入到远离点，从而实现对图像和文本的理解。CLIP适用于多种任务，具有良好的可解释性，广泛用于图像搜索、图像标注、虚拟现实等领域。它代表了深度学习领域中在文本和图">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CLIP及其改进工作总结">
-<meta property="og:url" content="http://ultramarine-indigo.github.io/2023/07/08/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:url" content="http://ultramarine-indigo.github.io/2023/10/14/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="ultramarine&#39;s Blog">
 <meta property="og:description" content="CLIP（Contrastive Language-Image Pre-training）是由OpenAI开发的深度学习模型，用于将文本和图像之间的关系建模。该模型通过对比学习原理，将相关的文本和图像嵌入到相邻点，而将不相关的文本和图像嵌入到远离点，从而实现对图像和文本的理解。CLIP适用于多种任务，具有良好的可解释性，广泛用于图像搜索、图像标注、虚拟现实等领域。它代表了深度学习领域中在文本和图">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-07-08T03:35:56.000Z">
-<meta property="article:modified_time" content="2023-11-30T03:14:14.258Z">
+<meta property="article:published_time" content="2023-10-14T03:35:56.000Z">
+<meta property="article:modified_time" content="2023-12-13T04:18:53.979Z">
 <meta property="article:author" content="Ultramarine">
 <meta property="article:tag" content="多模态">
 <meta property="article:tag" content="CLIP">
@@ -35,11 +35,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://ultramarine-indigo.github.io/2023/07/08/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/">
+<link rel="canonical" href="http://ultramarine-indigo.github.io/2023/10/14/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2023/07/08/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/","path":"2023/07/08/CLIP及其改进工作总结/","title":"CLIP及其改进工作总结"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2023/10/14/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/","path":"2023/10/14/CLIP及其改进工作总结/","title":"CLIP及其改进工作总结"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>CLIP及其改进工作总结 | ultramarine's Blog</title>
@@ -131,7 +131,7 @@ CLIP4Clip：视频中video-text retrieval</span></a></li><li class="nav-item nav
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -142,7 +142,7 @@ CLIP4Clip：视频中video-text retrieval</span></a></li><li class="nav-item nav
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -169,7 +169,7 @@ CLIP4Clip：视频中video-text retrieval</span></a></li><li class="nav-item nav
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2023/07/08/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2023/10/14/CLIP%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/header.jpg">
@@ -198,7 +198,7 @@ CLIP4Clip：视频中video-text retrieval</span></a></li><li class="nav-item nav
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2023-07-08 11:35:56" itemprop="dateCreated datePublished" datetime="2023-07-08T11:35:56+08:00">2023-07-08</time>
+      <time title="创建时间：2023-10-14 11:35:56" itemprop="dateCreated datePublished" datetime="2023-10-14T11:35:56+08:00">2023-10-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -421,12 +421,12 @@ encoder（ESResNeXt）中得到语音特征。用视频、文本、语音三个�
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/06/18/linux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1/" rel="prev" title="linux内核模块设计">
-                  <i class="fa fa-angle-left"></i> linux内核模块设计
+                <a href="/2023/09/04/speech-model%E8%AF%AD%E9%9F%B3%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93/" rel="prev" title="speech model语音模型总结">
+                  <i class="fa fa-angle-left"></i> speech model语音模型总结
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/08/06/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93/" rel="next" title="多模态论文梳理总结">
+                <a href="/2023/11/10/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93/" rel="next" title="多模态论文梳理总结">
                   多模态论文梳理总结 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
