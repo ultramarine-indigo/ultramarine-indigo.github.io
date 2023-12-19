@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ultramarine-indigo.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.18.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="多模态指的是多种模态的信息数据，包括：文本、图像、视频、音频等。多模态任务是指需要同时处理两种或多种不同类型的数据的任务。传统的多模态研究大多数都集中在视觉和语言任务上，并且可能并不直接有助于 3D 点云理解、音频识别或其他模式等挑战。因此，一些工作试图设计一个统一的多模态网络，能够同时处理图片、文本、音频、3D点云等多个模态的任务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多模态论文梳理总结——multimodal model">
+<meta property="og:url" content="http://ultramarine-indigo.github.io/2023/11/23/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94multimodal-model/index.html">
+<meta property="og:site_name" content="ultramarine&#39;s Blog">
+<meta property="og:description" content="多模态指的是多种模态的信息数据，包括：文本、图像、视频、音频等。多模态任务是指需要同时处理两种或多种不同类型的数据的任务。传统的多模态研究大多数都集中在视觉和语言任务上，并且可能并不直接有助于 3D 点云理解、音频识别或其他模式等挑战。因此，一些工作试图设计一个统一的多模态网络，能够同时处理图片、文本、音频、3D点云等多个模态的任务。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Meta-Transformer framework.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Meta-Transformer Data-to-Sequence Tokenization.png">
+<meta property="article:published_time" content="2023-11-23T03:43:20.000Z">
+<meta property="article:modified_time" content="2023-12-19T14:36:59.262Z">
+<meta property="article:author" content="Ultramarine">
+<meta property="article:tag" content="多模态">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Meta-Transformer framework.png">
+
+
+<link rel="canonical" href="http://ultramarine-indigo.github.io/2023/11/23/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94multimodal-model/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2023/11/23/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94multimodal-model/","path":"2023/11/23/多模态论文梳理总结——multimodal-model/","title":"多模态论文梳理总结——multimodal model"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>多模态论文梳理总结——multimodal model | ultramarine's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ultramarine's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section">关于</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section">标签</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section">分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#imagebind"><span class="nav-text">ImageBind</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A0%94%E7%A9%B6%E5%8A%A8%E6%9C%BA"><span class="nav-text">研究动机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%A1%86%E6%9E%B6"><span class="nav-text">模型框架</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#meta-transformer"><span class="nav-text">Meta-Transformer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-1"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="nav-text">模型结构</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ultramarine"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">Ultramarine</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives">
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2023/11/23/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94multimodal-model/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="Ultramarine">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ultramarine's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="多模态论文梳理总结——multimodal model | ultramarine's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          多模态论文梳理总结——multimodal model
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-11-23 11:43:20" itemprop="dateCreated datePublished" datetime="2023-11-23T11:43:20+08:00">2023-11-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%BA%E6%96%87%E8%AF%A6%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">论文详解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>多模态指的是多种模态的信息数据，包括：文本、图像、视频、音频等。多模态任务是指需要同时处理两种或多种不同类型的数据的任务。传统的多模态研究大多数都集中在视觉和语言任务上，并且可能并不直接有助于
+3D
+点云理解、音频识别或其他模式等挑战。因此，一些工作试图设计一个统一的多模态网络，能够同时处理图片、文本、音频、3D点云等多个模态的任务。</p>
+<span id="more"></span>
+<h4 id="imagebind">ImageBind</h4>
+<p>论文：IMAGEBIND: One Embedding Space To Bind Them All (CVPR 2023) <a
+target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2023/html/Girdhar_ImageBind_One_Embedding_Space_To_Bind_Them_All_CVPR_2023_paper.html">paper</a></p>
+<h5 id="研究动机">研究动机</h5>
+<p>一张简单的图片，能让人回忆起很多经历：海滩的图片可以让人想起海浪的声音，沙子的纹理，想起阵阵海风，甚至是一首诗。这种图像和多种模态信息的
+"绑定"
+给人们提供了许多监督的来源来学习视觉的特征，其方法就是人们会将图像与自己其他的感官信息
+"对齐"。理想的情况下，是否有一种联合的嵌入空间，可以将所有的这些种类的模态信息对齐来学习视觉特征。</p>
+<p>很多工作试图学习与文本对齐的图像特征，音频特征等。比如 CLIP
+就把图片和文本这两种模态做了对齐。但是这些工作所学习到的Embedding有两个局限性：</p>
+<ul>
+<li>只使用一对Embedding (比如视觉和文本)，或者较少的几对Embedding。</li>
+<li>学习到的Embedding仅限于用于训练的模态对。比如，视频音频嵌入不能直接用于图像文本任务。</li>
+</ul>
+<h5 id="基本思想">基本思想</h5>
+<p>ImageBind 是利用多种模态 (text, audio, depth, IMU) 与 image
+的配对数据来学习共享的表征空间的方法。不需要所有模态彼此同时出现（ image
++ text + audio+ depth + IMU），而是通过 image/video 这种模态，来 "绑定"
+其他多种模态的数据（image + text，image + audio）。这允许 ImageBind
+将文本嵌入隐式对齐到其他模态，例如音频、深度等，从而在该模态上实现零样本识别能力，而无需显式语义或文本配对。而且，
+ImageBind 可以使用 CLIP
+等大规模视觉语言模型进行初始化，从而利用这些模型丰富的图像和文本表示。因此，ImageBind
+可以在只进行少量训练的情况下轻松应用于多种模态任务。</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/ImageBind-capability.png"
+alt="ImageBind-capability" />
+<figcaption aria-hidden="true">ImageBind-capability</figcaption>
+</figure>
+<p>ImageBind 的联合嵌入表征可以用于各种组合任务，如图所示，包括1)
+跨模态检索：快速对齐音频，深度图和文本信息。2)
+给一个嵌入增加来自不同模态的另一个嵌入可以自然地增加语音信息。3)
+音频到图像的生成，通过预训练的 DALLE-2 解码器，旨在与 CLIP
+的文本嵌入一起工作。</p>
+<h5 id="模型框架">模型框架</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/ImageBind-framework.png"
+alt="ImageBind-framework" />
+<figcaption aria-hidden="true">ImageBind-framework</figcaption>
+</figure>
+<ul>
+<li>image：使用 Patch Size 为 16 和 stride 为 10 的 ViT
+作为encoder。</li>
+<li>video：从2秒采样的2帧视频剪辑。同image，encoder为ViT。</li>
+<li>audio：使用 128 mel-spectrogram bins 将 16kHz 采样的 2
+秒音频转换为频谱图。同image，encoder为ViT。</li>
+<li>thermal image 和 depth image：按照 channel 为1的 image
+来处理，encoder为ViT。</li>
+<li>IMU：将深度转换为视差图，以实现尺度不变性。提取由 X、Y 和 Z
+轴上的加速度计和陀螺仪测量组成的IMU信号。使用 5 秒的剪辑，从而产生 2K
+时间步长 IMU 读数，这些读数是使用核大小为 8 的 1D
+卷积投影的。使用transformer作为encoder。</li>
+<li>text：CLIP中的text encoder</li>
+</ul>
+<p>对 images, text, audio, thermal images, depth images, 和 IMU
+使用单独的编码器，在每个编码器上添加特定于模态的线性投影头来获得固定大小的
+d 维embedding，该embedding被归一化计算 InfoNCE
+损失函数。除了易于学习之外，这种设置还允许使用预训练的 CLIP 或 OpenCLIP
+的图像和文本编码器。</p>
+<h4 id="meta-transformer">Meta-Transformer</h4>
+<p>论文：Meta-Transformer: A Unified Framework for Multimodal Learning
+<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.10802">paper</a></p>
+<h5 id="基本思想-1">基本思想</h5>
+<p><strong>Meta-Transformer 探索了 Transformer
+架构处理12种模态的潜力</strong>，包括图像 (images)、自然语言 (natural
+language)、点云 (point cloud)、音频谱图 (audio spectrogram)、视频
+(video)、红外 (infrared)、高光谱 (hyperspectral)、X射线
+(X-Ray)、IMU、表格 (tabular)、图 (graph) 和时间序列 (time-series)
+数据。Meta-Transformer
+利用模态<strong>共享参数空间来编码多种数据模态的统一框架</strong>，即希望找到一个共享的参数空间，多模态神经网络可以表述为一个统一的映射函数，对所有模态的数据，优化模型参数，使得模型的预测值和真实值尽量接近</p>
+<h5 id="模型结构">模型结构</h5>
+<p><img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Meta-Transformer framework.png" alt="Meta-Transformer framework" style="zoom:67%;" /></p>
+<p>Meta-Transformer
+使用相同的参数集同时编码来自十几个模态的数据的框架。包含三个简单有效的组件：用于数据到文本标记化的模态专家、用于提取跨模态表示的模态共享编码器和下游任务的任务特定头部。具体来说，Meta-Transformer
+首先将多模态数据转换为共享公共流形空间的标记序列。然后，具有冻结参数的模态共享编码器提取表示，通过仅更新下游任务头和轻量级标记器的参数，进一步适应单个任务。最后，可以通过这个简单的框架有效地学习特定于任务的和模态通用表示。如下式所示，其中<span
+class="math inline">\(f,g,h\)</span>分别表示 tokenizer，Encoder 和 head
+<span class="math display">\[
+\hat{\boldsymbol{y}}=\mathcal{F}\left(\boldsymbol{x} ; \theta^*\right)=h
+\circ g \circ f(\boldsymbol{x}), \quad \theta^*=\underset{\theta}{\arg
+\min } \mathcal{L}(\hat{y}, y)
+\]</span> <strong>data-to-sequence
+tokenization</strong>：将各种模态的数据转化成 token Embeddings</p>
+<p><img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Meta-Transformer Data-to-Sequence Tokenization.png" alt="Meta-Transformer Data-to-Sequence Tokenization" style="zoom: 67%;" /></p>
+<ul>
+<li><p>Natural Language</p>
+<p>遵循了 BERT和 RoBERTa的做法，使用了带有 30,000 token 词汇表的
+WordPiece
+embeddings，把原有的单词分成子词，每个子词对应于词汇表中的唯一标记，然后投影到
+word Embedding 的高维特征空间。因此，每个输入文本被转换为一组 token
+Embedding。</p></li>
+<li><p>image</p>
+<p>图片reshape 成为 2D patches 的序列，然后使用projection
+layer将嵌入维度投影到D维。其中，<span
+class="math inline">\((H,W)\)</span>代表原始图片分辨率，C表示通道数，
+S代表 Patch Size，<span class="math inline">\(N_s=(HW/S^2)\)</span> 代表
+Patch 的数量. <span class="math display">\[
+\boldsymbol{x}_I \in \mathbb{R}^{C \times H \times W} \rightarrow
+\boldsymbol{x}_I^{\prime} \in \mathbb{R}^{N_s \times\left(S^2 \cdot
+C\right)} \rightarrow \boldsymbol{x}_I^{\prime \prime} \in
+\mathbb{R}^{N_s \times D}
+\]</span></p></li>
+<li><p>点云</p>
+<p>为了学习 3D 模式，将点云从原始输入空间转换为 token Embedding
+空间。<span
+class="math inline">\(\mathcal{X}=\left\{\boldsymbol{x}_i\right\}_{i=1}^P\)</span>表示P个点的点云，其中<span
+class="math inline">\(\boldsymbol{x}_i=\left(\boldsymbol{p}_i,
+\boldsymbol{f}_i\right), \boldsymbol{p}_i \in \mathbb{R}^3\)</span>表示
+3D 坐标， <span class="math inline">\(f_i\)</span>是第
+i个点的特征。通常，<span
+class="math inline">\(f_i\)</span>包含颜色、视点、法线等视觉提示。使用
+Farthest Point Sampling (FPS) 的做法对具有固定采样率 (1/4)
+的原始点云的代表性骨架进行采样，然后使用KNN对相邻点进行分组。基于包含局部几何先验的
+group set，因此构造了具有 group subset
+中心点的邻接矩阵，以便于进一步覆盖 3D 对象的综合结构信息。</p>
+<p>最后，从K个子集中聚合结构表征，得到点嵌入为 <span
+class="math display">\[
+\boldsymbol{x}_P \in \mathbb{R}^{P \times(3+c)} \rightarrow
+\boldsymbol{x}_P^{\prime} \in \mathbb{R}^{\frac{P}{4} \times
+\frac{D}{2}} \rightarrow \boldsymbol{x}_P^{\prime \prime} \in
+\mathbb{R}^{\frac{P}{16} \times D}
+\]</span></p></li>
+<li><p>音频</p>
+<p>使用 log Mel
+滤波器组对持续时间为t秒的音频波形进行预处理，然后使用步幅为<span
+class="math inline">\(t_s\)</span>的汉明窗口在<span
+class="math inline">\(f_s\)</span>的频率上将原始波拆分为<span
+class="math inline">\(l=(t/t_s)\)</span>区间，并将原始波进一步转换为<span
+class="math inline">\(l\)</span>维滤波器组。</p>
+<p>随后，将谱图按时间和频率维度分割成小 Patch，Patch Size 为S 。与图像
+Patch 不同，音频补丁在谱图上重叠。在 AST之后，作者还选择通过<span
+class="math inline">\(S*S\)</span>卷积将整个谱图分割为<span
+class="math inline">\(N_s=12[(100t−16)/10]\)</span>个 Patch，然后将
+Patch 扁平化为 token 序列。其中，T和F分别代表时间和频率的维度 <span
+class="math display">\[
+\boldsymbol{x}_A \in \mathbb{R}^{T \times F} \rightarrow
+\boldsymbol{x}_A^{\prime} \in \mathbb{R}^{N_s \times S \times S}
+\rightarrow \boldsymbol{x}_A^{\prime \prime} \in \mathbb{R}^{\left(N_s
+\cdot D / S^2\right) \times D}
+\]</span></p></li>
+</ul>
+<p><strong>Unified
+Encoder</strong>：利用具有冻结参数的统一变压器编码器来编码来自不同模态的token
+embedding序列</p>
+<p>利用 ViT 作为 Backbone 网络，并通过对比学习在 LAION-2B
+数据集上对其进行预训练，强化了它编码通用 token
+的能力。对于文本理解，利用 CLIP 的预训练文本 tokenizer
+将句子分割成子词并进一步转化为词嵌入。</p>
+<p>token embedding 在最前面加了一个 cls token ，使用的是可学习的 1D
+位置编码得到position embedding，将position embedding和token
+embedding相加，即 Encoder的输入。Encoder 的架构遵循 ViT
+的设计，即L层的multi-head self-attention (MSA) layers 和 MLP
+blocks。</p>
+<p><strong>Task-Specific Heads</strong></p>
+<p>在通过 Transformer Encoder
+得到表征之后，作者进一步把它们送到特定任务的 head 中。它们主要由 MLP
+构成，并且因模式和任务而异。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/" rel="tag"># 多模态</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/11/10/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94VLP%20model/" rel="prev" title="多模态论文梳理总结——VLP model">
+                  <i class="fa fa-angle-left"></i> 多模态论文梳理总结——VLP model
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/12/08/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94Multimodal-LLM/" rel="next" title="多模态论文梳理总结——Multimodal LLM">
+                  多模态论文梳理总结——Multimodal LLM <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ultramarine</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
