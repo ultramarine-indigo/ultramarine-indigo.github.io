@@ -21,29 +21,29 @@
 
     <meta name="description" content="多模态指的是多种模态的信息数据，包括：文本、图像、视频、音频等。多模态任务是指需要同时处理两种或多种不同类型的数据的任务。传统的多模态研究大多数都集中在视觉和语言任务上，并且可能并不直接有助于 3D 点云理解、音频识别或其他模式等挑战。因此，一些工作试图设计一个统一的多模态网络，能够同时处理图片、文本、音频、3D点云等多个模态的任务。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="多模态论文梳理总结——multimodal model">
-<meta property="og:url" content="http://ultramarine-indigo.github.io/2023/11/23/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94multimodal-model/index.html">
+<meta property="og:title" content="多模态模型总结——Multimodal Large Language Model">
+<meta property="og:url" content="http://ultramarine-indigo.github.io/2023/12/15/%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94Multimodal%20Large%20Language%20Model/index.html">
 <meta property="og:site_name" content="ultramarine&#39;s Blog">
 <meta property="og:description" content="多模态指的是多种模态的信息数据，包括：文本、图像、视频、音频等。多模态任务是指需要同时处理两种或多种不同类型的数据的任务。传统的多模态研究大多数都集中在视觉和语言任务上，并且可能并不直接有助于 3D 点云理解、音频识别或其他模式等挑战。因此，一些工作试图设计一个统一的多模态网络，能够同时处理图片、文本、音频、3D点云等多个模态的任务。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Meta-Transformer framework.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Meta-Transformer Data-to-Sequence Tokenization.png">
-<meta property="article:published_time" content="2023-11-23T03:43:20.000Z">
-<meta property="article:modified_time" content="2023-12-19T14:36:59.262Z">
+<meta property="article:published_time" content="2023-12-15T03:43:20.000Z">
+<meta property="article:modified_time" content="2024-07-15T09:08:51.925Z">
 <meta property="article:author" content="Ultramarine">
 <meta property="article:tag" content="多模态">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Meta-Transformer framework.png">
 
 
-<link rel="canonical" href="http://ultramarine-indigo.github.io/2023/11/23/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94multimodal-model/">
+<link rel="canonical" href="http://ultramarine-indigo.github.io/2023/12/15/%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94Multimodal%20Large%20Language%20Model/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2023/11/23/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94multimodal-model/","path":"2023/11/23/多模态论文梳理总结——multimodal-model/","title":"多模态论文梳理总结——multimodal model"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ultramarine-indigo.github.io/2023/12/15/%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94Multimodal%20Large%20Language%20Model/","path":"2023/12/15/多模态模型总结——Multimodal Large Language Model/","title":"多模态模型总结——Multimodal Large Language Model"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>多模态论文梳理总结——multimodal model | ultramarine's Blog</title>
+<title>多模态模型总结——Multimodal Large Language Model | ultramarine's Blog</title>
   
 
 
@@ -115,7 +115,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#imagebind"><span class="nav-text">ImageBind</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A0%94%E7%A9%B6%E5%8A%A8%E6%9C%BA"><span class="nav-text">研究动机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%A1%86%E6%9E%B6"><span class="nav-text">模型框架</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#meta-transformer"><span class="nav-text">Meta-Transformer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-1"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="nav-text">模型结构</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#imagebind"><span class="nav-text">ImageBind</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A0%94%E7%A9%B6%E5%8A%A8%E6%9C%BA"><span class="nav-text">研究动机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%A1%86%E6%9E%B6"><span class="nav-text">模型框架</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#meta-transformer"><span class="nav-text">Meta-Transformer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-1"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="nav-text">模型结构</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#onellm"><span class="nav-text">OneLLM</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-2"><span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95"><span class="nav-text">具体方法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="nav-text">模型架构</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%B8%90%E8%BF%91%E5%BC%8F%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AF%B9%E9%BD%90"><span class="nav-text">渐近式多模态对齐</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -168,7 +168,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2023/11/23/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94multimodal-model/">
+    <link itemprop="mainEntityOfPage" href="http://ultramarine-indigo.github.io/2023/12/15/%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94Multimodal%20Large%20Language%20Model/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/header.jpg">
@@ -181,12 +181,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="多模态论文梳理总结——multimodal model | ultramarine's Blog">
+      <meta itemprop="name" content="多模态模型总结——Multimodal Large Language Model | ultramarine's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          多模态论文梳理总结——multimodal model
+          多模态模型总结——Multimodal Large Language Model
         </h1>
 
         <div class="post-meta-container">
@@ -197,7 +197,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2023-11-23 11:43:20" itemprop="dateCreated datePublished" datetime="2023-11-23T11:43:20+08:00">2023-11-23</time>
+      <time title="创建时间：2023-12-15 11:43:20" itemprop="dateCreated datePublished" datetime="2023-12-15T11:43:20+08:00">2023-12-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -307,13 +307,13 @@ class="math inline">\(f,g,h\)</span>分别表示 tokenizer，Encoder 和 head
 tokenization</strong>：将各种模态的数据转化成 token Embeddings</p>
 <p><img src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/Meta-Transformer Data-to-Sequence Tokenization.png" alt="Meta-Transformer Data-to-Sequence Tokenization" style="zoom: 67%;" /></p>
 <ul>
-<li><p>Natural Language</p>
+<li><p><strong>Natural Language</strong></p>
 <p>遵循了 BERT和 RoBERTa的做法，使用了带有 30,000 token 词汇表的
 WordPiece
 embeddings，把原有的单词分成子词，每个子词对应于词汇表中的唯一标记，然后投影到
 word Embedding 的高维特征空间。因此，每个输入文本被转换为一组 token
 Embedding。</p></li>
-<li><p>image</p>
+<li><p><strong>image</strong></p>
 <p>图片reshape 成为 2D patches 的序列，然后使用projection
 layer将嵌入维度投影到D维。其中，<span
 class="math inline">\((H,W)\)</span>代表原始图片分辨率，C表示通道数，
@@ -324,7 +324,7 @@ Patch 的数量. <span class="math display">\[
 C\right)} \rightarrow \boldsymbol{x}_I^{\prime \prime} \in
 \mathbb{R}^{N_s \times D}
 \]</span></p></li>
-<li><p>点云</p>
+<li><p><strong>point cloud</strong></p>
 <p>为了学习 3D 模式，将点云从原始输入空间转换为 token Embedding
 空间。<span
 class="math inline">\(\mathcal{X}=\left\{\boldsymbol{x}_i\right\}_{i=1}^P\)</span>表示P个点的点云，其中<span
@@ -336,15 +336,15 @@ class="math inline">\(f_i\)</span>包含颜色、视点、法线等视觉提示�
 Farthest Point Sampling (FPS) 的做法对具有固定采样率 (1/4)
 的原始点云的代表性骨架进行采样，然后使用KNN对相邻点进行分组。基于包含局部几何先验的
 group set，因此构造了具有 group subset
-中心点的邻接矩阵，以便于进一步覆盖 3D 对象的综合结构信息。</p>
-<p>最后，从K个子集中聚合结构表征，得到点嵌入为 <span
-class="math display">\[
+中心点的邻接矩阵，以便于进一步覆盖 3D
+对象的综合结构信息。最后，从K个子集中聚合结构表征，得到点嵌入为</p>
+<p><span class="math display">\[
 \boldsymbol{x}_P \in \mathbb{R}^{P \times(3+c)} \rightarrow
 \boldsymbol{x}_P^{\prime} \in \mathbb{R}^{\frac{P}{4} \times
 \frac{D}{2}} \rightarrow \boldsymbol{x}_P^{\prime \prime} \in
 \mathbb{R}^{\frac{P}{16} \times D}
 \]</span></p></li>
-<li><p>音频</p>
+<li><p><strong>audio</strong></p>
 <p>使用 log Mel
 滤波器组对持续时间为t秒的音频波形进行预处理，然后使用步幅为<span
 class="math inline">\(t_s\)</span>的汉明窗口在<span
@@ -378,7 +378,70 @@ blocks。</p>
 <p><strong>Task-Specific Heads</strong></p>
 <p>在通过 Transformer Encoder
 得到表征之后，作者进一步把它们送到特定任务的 head 中。它们主要由 MLP
-构成，并且因模式和任务而异。</p>
+构成，且因模态和任务而异。</p>
+<h4 id="onellm">OneLLM</h4>
+<p>论文：OneLLM: One Framework to Align All Modalities with Language
+(CVPR2024) <a
+target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2024/html/Han_OneLLM_One_Framework_to_Align_All_Modalities_with_Language_CVPR_2024_paper.html">paper</a></p>
+<h5 id="基本思想-2">基本思想</h5>
+<p>现有的MLLM严重依赖特定于模态的编码器，通常在架构上有所不同，并且仅限于常见的模态。因此，MLLM的一个关键挑战是如何构建一个<strong>统一且可扩展的编码器，能够处理广泛的模态</strong>。本文提出了
+OneLLM，可以使用一个统一的框架将八种模式与语言对齐。通过统一的多模态编码器和渐进式多模态对齐管道来实现这一点。首先训练一个图像投影模块，将视觉编码器与LLM连接起来。然后，我们通过混合多个图像投影模块和动态路由来构建一个通用投影模块（UPM）。最后，我们将更多的模态与LLM与UPM逐步对齐。</p>
+<h5 id="具体方法">具体方法</h5>
+<figure>
+<img
+src="https://raw.githubusercontent.com/ultramarine-indigo/ultramarine-indigo.github.io/main/imgs/OneLLM-framework.png"
+alt="OneLLM-framework" />
+<figcaption aria-hidden="true">OneLLM-framework</figcaption>
+</figure>
+<h6 id="模型架构">模型架构</h6>
+<ul>
+<li><p><strong>Lightweight Modality
+Tokenizers</strong>：将输入信号转换为 token
+序列，使得基于transformer的编码器可以处理这些token。对于image，直接使用单个2D卷积层；对于其他模态，先把输入信号转变为2D/1D序列，然后再通过2D/1D卷积层对序列进行Tokenizing。</p></li>
+<li><p><strong>Universal
+Encoder</strong>：利用CLIP-ViT作为通用的encoder，训练时固定该模块参数。对于视频信号来说，会并行处理视频的每一帧得到每一帧的特征，然后通过token-wise的平均得到视频信号的token序列作为UPM模块的输入</p></li>
+<li><p><strong>Universal Projection Module</strong>：UPM 由 K 个投影专家
+{<span class="math inline">\(P_k\)</span>}
+组成，其中每个专家都是在图像文本数据上预训练Transformer
+block，实验证明多个专家更有效并易于扩展。使用了一个MLP作为动态模态路由R来合并投影专家
+，其输入是每一个模态对应的token序列，输出是每一个expert的权重。为了在多个模态之间进行切换，对每一个模态都添加了一系列可学习的token序列，一起送入UPM中。
+<span class="math display">\[
+\begin{equation}
+\begin{aligned}
+{\left[\overline{\mathbf{q}}_m, \overline{\mathbf{x}}_m\right] } &amp;
+=\operatorname{UPM}\left(\left[\mathbf{q}_m,
+\mathbf{x}_m\right]\right)=\sum_{k=1}^K \mathbf{w}_m \cdot
+P_k\left(\left[\mathbf{q}_m, \mathbf{x}_m\right]\right) \\
+\mathbf{w}_m &amp; =\sigma \circ R_m\left(\left[\mathbf{q}_m,
+\mathbf{x}_m\right]\right)
+\end{aligned}
+\end{equation}
+\]</span> 其中<span
+class="math inline">\(\mathbf{w}_m\)</span>为路由权重，<span
+class="math inline">\(\sigma\)</span>是softmax。最终，只把<span
+class="math inline">\(\overline{\mathbf{q}}_m\)</span>作为对输入信号的总结，输入LLM。</p></li>
+<li><p><strong>LLM</strong>：采用LLaMA2作为LLM，modality
+tokens在文本token之前。</p></li>
+</ul>
+<h6 id="渐近式多模态对齐">渐近式多模态对齐</h6>
+<p>由于不同模态对应的数据的规模不均衡，直接在多模态的数据集上训练模型会导致模型的biased，因此采用了渐进式训练，即先训练一个image-to-text模型，然后把这个模型作为初始模型，依次在其他模态数据上训练模型。</p>
+<ul>
+<li><strong>Image-Text
+Alignment</strong>：初始训练的图像-文本对齐模型包含一个图像tokenizer、预训练的CLIP-ViT、一个project模块<span
+class="math inline">\(P_I\)</span>和一个LLM。<span
+class="math inline">\(P_I\)</span>不仅可以作为连接图像和语言的桥梁，还可以作为对齐其他模块和文本的很好的初始化模型。</li>
+<li><strong>Multimodal-Text
+Alignment</strong>：在第t步，模型已经在多个模态的数据集<span
+class="math inline">\(M_1 \cup M_2 ...
+M_{t-1}\)</span>训练过，当前的训练数据来自于模态<span
+class="math inline">\(M_t\)</span>。为了避免灾难性遗忘，将从以前的训练数据和当前数据中均匀地采样。stage1:
+image；stage2: video, audio, point cloud；stage3: depth/normal map, IMU
+and fMRI。</li>
+<li><strong>Multimodal-Text
+Dataset</strong>：image-text：LAION-400M、LAION-COCO；video：WebVid-2.5M；audio：WavCaps；point
+cloud：Cap3D；IMU-text：Ego4D；fMRI-text：NSD；depth/normal
+map：预训练的DPT模型+CC3M数据集。</li>
+</ul>
 
     </div>
 
@@ -395,13 +458,13 @@ blocks。</p>
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/11/10/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94VLP%20model/" rel="prev" title="多模态论文梳理总结——VLP model">
-                  <i class="fa fa-angle-left"></i> 多模态论文梳理总结——VLP model
+                <a href="/2023/11/28/%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94Large%20Vision-Language%20Model/" rel="prev" title="多模态模型总结——Large Vision-Language Model">
+                  <i class="fa fa-angle-left"></i> 多模态模型总结——Large Vision-Language Model
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/12/08/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94Multimodal-LLM/" rel="next" title="多模态论文梳理总结——Multimodal LLM">
-                  多模态论文梳理总结——Multimodal LLM <i class="fa fa-angle-right"></i>
+                <a href="/2023/12/21/%E3%80%8AThe-Craft-of-Research%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="next" title="《The Craft of Research》读书笔记">
+                  《The Craft of Research》读书笔记 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
